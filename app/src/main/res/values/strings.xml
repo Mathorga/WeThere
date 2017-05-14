@@ -1,0 +1,10 @@
+<resources>
+    <string name="google_maps_key"
+            translatable="false">AIzaSyAxFnfrTaPG7VZ6VJLz-CV2pIDe-ti0NPc</string>
+    <string name="app_name">RWeThereYet</string>
+    <string name="locations_activity_name">Locations</string>
+    <string name="add_location_activity_name">Add Location</string>
+    <string name="new_location_label">Label:</string>
+    <string name="new_location_label_hint">Washington</string>
+    <string name="new_location_radius">Radius:</string>
+</resources>
