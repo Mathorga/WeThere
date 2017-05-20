@@ -4,21 +4,25 @@ import android.content.Intent;
 import android.location.Location;
 import android.media.Ringtone;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.Serializable;
+
 /**
  * Created by Luka on 10/05/2017.
  */
 
-public class LocationItem {
+public class LocationItem implements Serializable {
 
     private String name;
     private Integer radius;
-    private Location location;;
+    private LatLng location;;
     private Ringtone tone;
     private boolean active;
 
     public LocationItem(final String name,
                         final Integer radius,
-                        final Location location,
+                        final LatLng location,
                         final Ringtone tone) {
         this.name = name;
         this.radius = radius;
@@ -35,11 +39,11 @@ public class LocationItem {
         this.name = name;
     }
 
-    public Location getLocation() {
+    public LatLng getLocation() {
         return this.location;
     }
 
-    public void setLocation(final Location location) {
+    public void setLocation(final LatLng location) {
         this.location = location;
     }
 

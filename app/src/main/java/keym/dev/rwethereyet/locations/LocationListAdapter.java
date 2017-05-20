@@ -46,7 +46,7 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
             }
 
             if (coordinates != null) {
-                coordinates.setText(item.getLocation().getLatitude() + " - " + item.getLocation().getLongitude());
+                coordinates.setText(item.getLocation().latitude + " - " + item.getLocation().longitude);
             }
 
             if (active != null) {

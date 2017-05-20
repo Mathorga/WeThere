@@ -5,6 +5,7 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -21,9 +22,10 @@ public class ResearchLocation extends AsyncTask<Void, Void, Boolean> {
 
     private String toSearch;
     private Address address;
-    private AppCompatActivity caller;
+    private AddLocationActivity caller;
+    private LatLng position;
 
-    public ResearchLocation(final String toSearch, final AppCompatActivity caller) {
+    public ResearchLocation(final String toSearch, final AddLocationActivity caller) {
         this.toSearch = toSearch;
         this.caller = caller;
     }
@@ -31,7 +33,8 @@ public class ResearchLocation extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         try {
-            Geocoder geocoder = new Geocoder(this.caller.getBaseContext(), Locale.ITALY);
+            // Create a geocoder for the default system locale.
+            Geocoder geocoder = new Geocoder(this.caller.getBaseContext());
             List<Address> results = geocoder.getFromLocationName(this.toSearch, 1);
 
             if (results.size() == 0) {
@@ -40,15 +43,22 @@ public class ResearchLocation extends AsyncTask<Void, Void, Boolean> {
 
             this.address = results.get(0);
 
-            // Now do something with this coords:
-            LatLng coords = new LatLng((int) (this.address.getLatitude() * 1E6),
-                                       (int) (this.address.getLongitude() * 1E6));
-            Log.d(TAG, coords.toString());
-
+            // Get the coordinates of the address.
+            LatLng coords = new LatLng(this.address.getLatitude(), this.address.getLongitude());
+            this.position = coords;
         } catch (Exception e) {
             Log.e("", "Something went wrong: ", e);
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onPostExecute(final Boolean result) {
+        if (result) {
+            this.caller.moveMapTo(this.position);
+        } else {
+            Toast.makeText(this.caller, "No match found", Toast.LENGTH_SHORT).show();
+        }
     }
 }
