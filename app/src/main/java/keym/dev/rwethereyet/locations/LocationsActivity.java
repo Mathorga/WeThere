@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -34,6 +35,8 @@ public class LocationsActivity extends AppCompatActivity {
     private List<LocationItem> locations;
     private ListView locationsView;
     private FloatingActionButton addButton;
+
+    private LocationListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +91,7 @@ public class LocationsActivity extends AppCompatActivity {
                                              5,
                                              new LatLng(40.76543, 34.83624),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
-        LocationListAdapter adapter = new LocationListAdapter(this, R.layout.item_location, this.locations);
+        adapter = new LocationListAdapter(this, R.layout.item_location, this.locations);
         this.locationsView.setAdapter(adapter);
 
         this.locationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -125,7 +128,12 @@ public class LocationsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == NEW_LOCATION_REQUEST) {
             if (resultCode == RESULT_OK) {
-                this.locations.add((LocationItem) data.getSerializableExtra("result"));
+                if (data == null) {
+                    Log.d(TAG, "Intent is NULL");
+                } else {
+                    this.locations.add((LocationItem) data.getParcelableExtra("result"));
+                    adapter.notifyDataSetChanged();
+                }
             }
         } else {
             Toast.makeText(this, "Unable to add a location", Toast.LENGTH_SHORT);
