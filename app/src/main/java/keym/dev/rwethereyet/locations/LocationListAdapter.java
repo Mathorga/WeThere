@@ -1,7 +1,6 @@
 package keym.dev.rwethereyet.locations;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,16 @@ import android.widget.TextView;
 import java.util.List;
 
 import keym.dev.rwethereyet.R;
+import keym.dev.rwethereyet.keym.dev.rwethereyet.utils.LocationItem;
 
 /**
  * Created by Luka on 09/05/2017.
  */
-public class LocationListAdapter extends ArrayAdapter<SavedLocation> {
+public class LocationListAdapter extends ArrayAdapter<LocationItem> {
 
     private int layoutResource;
     
-    public LocationListAdapter(final Context context, final int layoutResource, List<SavedLocation> data) {
+    public LocationListAdapter(final Context context, final int layoutResource, List<LocationItem> data) {
         super(context, layoutResource, data);
         this.layoutResource = layoutResource;
     }
@@ -34,7 +34,7 @@ public class LocationListAdapter extends ArrayAdapter<SavedLocation> {
             view = inflater.inflate(this.layoutResource, null);
         }
 
-        final SavedLocation item = this.getItem(position);
+        final LocationItem item = this.getItem(position);
 
         if (item != null) {
             TextView name = (TextView) view.findViewById(R.id.locationName);

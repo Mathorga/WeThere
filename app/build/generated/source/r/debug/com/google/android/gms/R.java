@@ -89,8 +89,8 @@ public final class R {
         public static final int satellite = 0x7f0c0040;
         public static final int standard = 0x7f0c0048;
         public static final int terrain = 0x7f0c0041;
-        public static final int text = 0x7f0c009c;
-        public static final int text2 = 0x7f0c009a;
+        public static final int text = 0x7f0c009e;
+        public static final int text2 = 0x7f0c009c;
         public static final int wide = 0x7f0c0049;
         public static final int wrap_content = 0x7f0c0028;
     }

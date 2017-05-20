@@ -5,23 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground" >
+    android:background="@color/colorBackground">
 
     <ScrollView
+        android:id="@+id/addLocationScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true" >
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:text="@string/new_location_label"
                 android:inputType="textCapWords"
                 android:textColor="@color/colorText"
@@ -31,7 +36,9 @@
                 android:id="@+id/newLocationLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
                 android:ems="10"
                 android:hint="@string/new_location_label_hint"
                 android:inputType="textCapWords"
@@ -43,19 +50,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:text="@string/new_location_radius"
                 android:inputType="textCapWords"
                 android:textColor="@color/colorText"
                 android:textSize="34sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/newLocationRadius"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:inputType="textCapWords"
                 android:textColor="@color/colorText"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:text="0 km"/>
 
             <SeekBar
                 android:id="@+id/newLocationRadiusBar"
@@ -63,11 +75,40 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp" />
 
-            <com.google.android.gms.maps.MapView
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/new_location_coords"
+                android:inputType="textCapWords"
+                android:textColor="@color/colorText"
+                android:textSize="34sp" />
+
+            <EditText
+                android:id="@+id/searchPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:ems="10"
+                android:hint="@string/new_location_search_hint"
+                android:inputType="textCapWords"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorHintText"
+                android:textSize="26sp" />
+
+            <keym.dev.rwethereyet.addlocation.ScrollableMapView
                 android:id="@+id/newLocationMap"
                 android:layout_width="wrap_content"
                 android:layout_height="400dp"
-                android:layout_margin="16dp"/>
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:clickable="true" />
 
         </LinearLayout>
     </ScrollView>
