@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +26,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.io.Serializable;
 
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.utils.LocationItem;
@@ -128,7 +133,7 @@ public class AddLocationActivity extends AppCompatActivity {
                 //TODO Return locationItem to the LocationsActivity.
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result", locationItem);
-                setResult(Activity.RESULT_OK);
+                setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
         });
@@ -136,7 +141,7 @@ public class AddLocationActivity extends AppCompatActivity {
         this.locationItem = new LocationItem(this.label.getText().toString(),
                 this.radiusBar.getProgress(),
                 new LatLng(0.0, 0.0),
-                null);
+                RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this)));
     }
 
     @Override
