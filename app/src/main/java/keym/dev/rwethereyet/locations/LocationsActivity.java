@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,39 +54,39 @@ public class LocationsActivity extends AppCompatActivity {
 
         this.locations.add(new LocationItem("Pesaro",
                                              5,
-                                             new Location("gps"),
+                                             new LatLng(12.12345, 43.54326),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
         this.locations.add(new LocationItem("Cesena",
                                              5,
-                                             new Location("gps"),
+                                             new LatLng(40.76543, 34.83624),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
         this.locations.add(new LocationItem("Milano",
                                              5,
-                                             new Location("gps"),
+                                             new LatLng(40.76543, 34.83624),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
         this.locations.add(new LocationItem("Roma",
                                              5,
-                                             new Location("gps"),
+                                             new LatLng(40.76543, 34.83624),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
         this.locations.add(new LocationItem("Bari",
                                              5,
-                                             new Location("gps"),
+                                             new LatLng(40.76543, 34.83624),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
         this.locations.add(new LocationItem("Torino",
                                              5,
-                                             new Location("gps"),
+                                             new LatLng(40.76543, 34.83624),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
         this.locations.add(new LocationItem("Caserta",
                                              5,
-                                             new Location("gps"),
+                                             new LatLng(40.76543, 34.83624),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
         this.locations.add(new LocationItem("Barrea",
                                              5,
-                                             new Location("gps"),
+                                             new LatLng(40.76543, 34.83624),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
         this.locations.add(new LocationItem("San Giustino",
                                              5,
-                                             new Location("gps"),
+                                             new LatLng(40.76543, 34.83624),
                                              RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this))));
         LocationListAdapter adapter = new LocationListAdapter(this, R.layout.item_location, this.locations);
         this.locationsView.setAdapter(adapter);
@@ -121,14 +123,13 @@ public class LocationsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == NEW_LOCATION_REQUEST) {
-                Uri locationUri = data.getData();
+        if (requestCode == NEW_LOCATION_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                this.locations.add((LocationItem) data.getSerializableExtra("result"));
             }
         } else {
             Toast.makeText(this, "Unable to add a location", Toast.LENGTH_SHORT);
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
