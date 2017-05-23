@@ -149,7 +149,7 @@ public class AddLocationActivity extends AppCompatActivity {
         this.done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Return locationItem to the LocationsActivity.
+                //TODO Return locationItem to the MainActivity.
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result", locationItem);
                 setResult(Activity.RESULT_OK, returnIntent);
