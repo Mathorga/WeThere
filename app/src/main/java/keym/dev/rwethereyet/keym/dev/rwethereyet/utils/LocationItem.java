@@ -52,6 +52,14 @@ public class LocationItem implements Parcelable {
         this.name = name;
     }
 
+    public Integer getRadius() {
+        return this.radius;
+    }
+
+    public void setRadius(final Integer radius) {
+        this.radius = radius;
+    }
+
     public LatLng getLocation() {
         return this.location;
     }
