@@ -62,6 +62,24 @@ public class AddLocationActivity extends AppCompatActivity {
 
         this.label = (EditText) this.findViewById(R.id.newLocationLabel);
         this.label.clearFocus();
+        this.label.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH ||
+                    i == EditorInfo.IME_ACTION_DONE ||
+                    i == EditorInfo.IME_ACTION_GO ||
+                    keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
+                    keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+                    // hide virtual keyboard
+                    InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    manager.hideSoftInputFromWindow(searchPosition.getWindowToken(), 0);
+
+                    locationItem.setName(label.getText().toString());
+                }
+                return false;
+            }
+        });
 
         this.radius = (TextView) this.findViewById(R.id.newLocationRadius);
 
@@ -70,6 +88,7 @@ public class AddLocationActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 radius.setText(String.valueOf(i) + " km");
+                locationItem.setRadius(i);
             }
 
             @Override

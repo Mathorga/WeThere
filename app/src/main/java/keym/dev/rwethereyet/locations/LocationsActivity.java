@@ -97,14 +97,16 @@ public class LocationsActivity extends AppCompatActivity {
         this.locationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(LocationsActivity.this, "Item" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LocationsActivity.this, locations.get(position).getName(), Toast.LENGTH_SHORT).show();
             }
         });
 
         this.locationsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(LocationsActivity.this, "Long" + i, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LocationsActivity.this,
+                               locations.get(i).getLocation().latitude + ", " + locations.get(i).getLocation().longitude,
+                               Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
