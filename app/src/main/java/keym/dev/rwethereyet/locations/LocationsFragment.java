@@ -115,14 +115,16 @@ public class LocationsFragment extends Fragment {
         this.locationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), locations.get(position).getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext().getApplicationContext(),
+                        locations.get(position).getName(),
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
         this.locationsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(),
+                Toast.makeText(view.getContext().getApplicationContext(),
                         locations.get(i).getLocation().latitude + ", " + locations.get(i).getLocation().longitude,
                         Toast.LENGTH_SHORT).show();
                 return false;

@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#2D2D2D</color>
-    <color name="colorPrimary">#323232</color>
-    <color name="colorBackground">#383838</color>
-    <color name="colorAccent">#FFBF00</color>
-    <color name="colorText">#FFFFFF</color>
-    <color name="colorHintText">#555555</color>
+    <!-- Fuscus theme colors. -->
+    <color name="fuscusColorPrimaryDark">#2D2D2D</color>
+    <color name="fuscusColorPrimary">#323232</color>
+    <color name="fuscusColorBackground">#383838</color>
+    <color name="fuscusColorAccent">#FFBF00</color>
+    <color name="fuscusColorText">#FFFFFF</color>
+    <color name="fuscusColorHintText">#555555</color>
+
+    <!-- Albus theme colors. -->
+    <color name="albusColorPrimaryDark">#606060</color>
+    <color name="albusColorPrimary">#808080</color>
+    <color name="albusColorBackground">#AAAAAA</color>
+    <color name="albusColorAccent">#FFBF00</color>
+    <color name="albusColorText">#000000</color>
+    <color name="albusColorHintText">#222222</color>
+
 </resources>

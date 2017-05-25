@@ -3,6 +3,7 @@ package keym.dev.rwethereyet;
 import android.Manifest;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private Toolbar toolbar;
     private ViewPager pager;
     private FragmentTabAdapter adapter;
     private TabLayout tabs;
@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
 
-        this.toolbar = (Toolbar) this.findViewById(R.id.mainToolbar);
-        this.setSupportActionBar(toolbar);
+        //this.toolbar = (Toolbar) this.findViewById(R.id.mainToolbar);
+        //this.setSupportActionBar(toolbar);
 
         // Ask for locations permissions.
         ActivityCompat.requestPermissions(this,

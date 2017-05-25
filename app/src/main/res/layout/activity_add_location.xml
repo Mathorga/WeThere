@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="?RWTYBackgroundColor">
 
     <ScrollView
         android:id="@+id/addLocationScroll"
@@ -28,7 +28,6 @@
                 android:layout_marginRight="16dp"
                 android:text="@string/new_location_label"
                 android:inputType="textCapWords"
-                android:textColor="@color/colorText"
                 android:textSize="34sp" />
 
             <EditText
@@ -41,8 +40,6 @@
                 android:ems="10"
                 android:hint="@string/new_location_label_hint"
                 android:inputType="textCapWords"
-                android:textColor="@color/colorText"
-                android:textColorHint="@color/colorHintText"
                 android:textSize="34sp" />
 
             <TextView
@@ -54,7 +51,6 @@
                 android:layout_marginRight="16dp"
                 android:text="@string/new_location_radius"
                 android:inputType="textCapWords"
-                android:textColor="@color/colorText"
                 android:textSize="34sp" />
 
             <TextView
@@ -64,7 +60,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:inputType="textCapWords"
-                android:textColor="@color/colorText"
                 android:textSize="20sp"
                 android:text="0 km"/>
 
@@ -83,7 +78,6 @@
                 android:layout_marginRight="16dp"
                 android:text="@string/new_location_coords"
                 android:inputType="textCapWords"
-                android:textColor="@color/colorText"
                 android:textSize="34sp" />
 
             <EditText
@@ -96,8 +90,6 @@
                 android:ems="10"
                 android:hint="@string/new_location_search_hint"
                 android:inputType="textCapWords"
-                android:textColor="@color/colorText"
-                android:textColorHint="@color/colorHintText"
                 android:textSize="26sp" />
 
             <keym.dev.rwethereyet.addlocation.ScrollableMapView
