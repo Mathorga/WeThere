@@ -1,10 +1,28 @@
-<resources>
+<resources
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/colorText</item>
+    <style name="Fuscus" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/fuscusColorPrimary</item>
+        <item name="colorPrimaryDark">@color/fuscusColorPrimaryDark</item>
+        <item name="colorAccent">@color/fuscusColorAccent</item>
+        <item name="RWTYBackgroundColor">@color/fuscusColorBackground</item>
+        <item name="RWTYTextColor">@color/fuscusColorText</item>
+        <item name="RWTYTextHintColor">@color/fuscusColorHintText</item>
+        <item name="android:textColor">@color/fuscusColorText</item>
+        <item name="android:textColorHint">@color/fuscusColorHintText</item>
+        <item name="android:editTextColor">@color/fuscusColorText</item>
+    </style>
+
+    <style name="Albus" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/albusColorPrimary</item>
+        <item name="colorPrimaryDark">@color/albusColorPrimaryDark</item>
+        <item name="colorAccent">@color/albusColorAccent</item>
+        <item name="RWTYBackgroundColor">@color/albusColorBackground</item>
+        <item name="RWTYTextColor">@color/albusColorText</item>
+        <item name="RWTYTextHintColor">@color/albusColorHintText</item>
+        <item name="android:textColor">@color/albusColorText</item>
+        <item name="android:textColorHint">@color/albusColorHintText</item>
+        <item name="android:editTextColor">@color/albusColorText</item>
     </style>
 
 </resources>

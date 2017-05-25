@@ -21,10 +21,10 @@ public class FragmentTabAdapter extends FragmentStatePagerAdapter {
         super(manager);
         this.tabs = new ArrayList<>();
         this.tabs.add(new Tab(new LocationsFragment(),
-                              R.drawable.ic_grade_white_24dp,
+                              R.drawable.ic_grade_custom_24dp,
                               R.string.locations_fragment_name));
         this.tabs.add(new Tab(new Fragment(),
-                              R.drawable.ic_map_white_24dp,
+                              R.drawable.ic_map_custom_24dp,
                               R.string.app_name));
     }
 

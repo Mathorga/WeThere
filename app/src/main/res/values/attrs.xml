@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="RWTYBackgroundColor" format="color"/>
+    <attr name="RWTYTextColor" format="color"/>
+    <attr name="RWTYTextHintColor" format="color"/>
+</resources>
