@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/locationName"
-            android:text="coordinates"/>
+            android:text="coordinates"
+            android:textColor="?RWTYTextHintColor"/>
 
         <Switch
             android:id="@+id/locationActive"

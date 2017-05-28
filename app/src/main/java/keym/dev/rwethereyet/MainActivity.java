@@ -1,29 +1,39 @@
 package keym.dev.rwethereyet;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import keym.dev.rwethereyet.settings.SettingsActivity;
+
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
     private ViewPager pager;
     private FragmentTabAdapter adapter;
     private TabLayout tabs;
+    private ImageButton menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
 
-        //this.toolbar = (Toolbar) this.findViewById(R.id.mainToolbar);
-        //this.setSupportActionBar(toolbar);
+//        this.toolbar = (Toolbar) this.findViewById(R.id.mainToolbar);
+//        this.setSupportActionBar(toolbar);
 
         // Ask for locations permissions.
         ActivityCompat.requestPermissions(this,
@@ -43,5 +53,27 @@ public class MainActivity extends AppCompatActivity {
             this.tabs.getTabAt(i).setIcon(this.adapter.getTabs().get(i).getIconResId());
             this.tabs.getTabAt(i).setText(this.adapter.getTabs().get(i).getTitleResId());
         }
+
+        this.menu = (ImageButton) this.findViewById(R.id.mainMenu);
+        this.menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(MainActivity.this, menu);
+                popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.mainSettings:
+                                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                startActivity(intent);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 }

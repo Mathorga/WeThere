@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?RWTYBackgroundColor">
 
     <!--<android.support.v7.widget.Toolbar
         android:id="@+id/mainToolbar"
@@ -15,19 +16,38 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/mainTabs"
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorPrimary"
-        app:tabTextColor="?RWTYTextHintColor"
-        app:tabSelectedTextColor="?RWTYTextColor"
-        app:tabMode="fixed" />
+        android:orientation="horizontal"
+        android:background="?RWTYBackgroundColor">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/mainTabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:layout_weight="2"
+            app:tabTextColor="?RWTYTextHintColor"
+            app:tabSelectedTextColor="?RWTYTextColor"
+            app:tabMode="fixed" />
+
+        <ImageButton
+            android:id="@+id/mainMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?colorPrimary"
+            app:srcCompat="@drawable/ic_more_vert_custom_24dp" />
+
+    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/mainPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?RWTYBackgroundColor"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

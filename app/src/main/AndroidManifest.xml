@@ -10,10 +10,11 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_amber"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Fuscus">
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -27,6 +28,11 @@
         <activity
             android:name=".addlocation.AddLocationActivity"
             android:label="@string/add_location_activity_name"
+            android:windowSoftInputMode="adjustNothing"></activity>
+
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/settings_activity_name"
             android:windowSoftInputMode="adjustNothing"></activity>
 
         <meta-data
