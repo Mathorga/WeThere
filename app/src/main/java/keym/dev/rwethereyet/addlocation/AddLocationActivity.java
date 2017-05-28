@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 
+import keym.dev.rwethereyet.BaseActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.utils.LocationItem;
 
@@ -36,7 +37,7 @@ import keym.dev.rwethereyet.keym.dev.rwethereyet.utils.LocationItem;
  * Created by luka on 11/05/17.
  */
 
-public class AddLocationActivity extends AppCompatActivity {
+public class AddLocationActivity extends BaseActivity {
 
     private static final String TAG = "AddLocationActivity";
     private static final int ZOOM = 16;
@@ -54,7 +55,7 @@ public class AddLocationActivity extends AppCompatActivity {
     private GoogleMap map;
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_add_location);
 

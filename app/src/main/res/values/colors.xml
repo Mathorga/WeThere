@@ -6,14 +6,14 @@
     <color name="fuscusColorBackground">#383838</color>
     <color name="fuscusColorAccent">#FFBF00</color>
     <color name="fuscusColorText">#FFFFFF</color>
-    <color name="fuscusColorHintText">#555555</color>
+    <color name="fuscusColorHintText">#777777</color>
 
     <!-- Albus theme colors. -->
-    <color name="albusColorPrimaryDark">#606060</color>
-    <color name="albusColorPrimary">#808080</color>
-    <color name="albusColorBackground">#AAAAAA</color>
-    <color name="albusColorAccent">#FFBF00</color>
+    <color name="albusColorPrimaryDark">#BBBBBB</color>
+    <color name="albusColorPrimary">#DDDDDD</color>
+    <color name="albusColorBackground">#F0F0F0</color>
+    <color name="albusColorAccent">#E0A000</color>
     <color name="albusColorText">#000000</color>
-    <color name="albusColorHintText">#222222</color>
+    <color name="albusColorHintText">#666666</color>
 
 </resources>

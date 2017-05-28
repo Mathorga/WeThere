@@ -25,7 +25,7 @@ public class FragmentTabAdapter extends FragmentStatePagerAdapter {
                               R.string.locations_fragment_name));
         this.tabs.add(new Tab(new Fragment(),
                               R.drawable.ic_map_custom_24dp,
-                              R.string.app_name));
+                              R.string.distance_fragment_name));
     }
 
     @Override
