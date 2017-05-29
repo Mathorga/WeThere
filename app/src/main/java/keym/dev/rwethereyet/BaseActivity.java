@@ -29,15 +29,14 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     protected void onResume() {
-//        this.setTheme(this.getSharedPreferences(PREFERENCES, 0).getInt(PREF_THEME, R.style.Fuscus));
         super.onResume();
         this.getSharedPreferences(PREFERENCES, 0).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-//        this.getSharedPreferences(PREFERENCES, 0).unregisterOnSharedPreferenceChangeListener(this);
+    protected void onDestroy() {
+        this.getSharedPreferences(PREFERENCES, 0).unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
     }
 
     @Override

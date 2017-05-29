@@ -5,13 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Ringtone;
+import android.location.Location;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -20,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,11 +27,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.Serializable;
-
 import keym.dev.rwethereyet.BaseActivity;
 import keym.dev.rwethereyet.R;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.utils.LocationItem;
+import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
 
 /**
  * Created by luka on 11/05/17.
@@ -65,18 +63,20 @@ public class AddLocationActivity extends BaseActivity {
         this.label.clearFocus();
         this.label.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent event) {
                 if (i == EditorInfo.IME_ACTION_SEARCH ||
                     i == EditorInfo.IME_ACTION_DONE ||
-                    i == EditorInfo.IME_ACTION_GO ||
-                    keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
-                    keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    i == EditorInfo.IME_ACTION_GO) {
 
                     // hide virtual keyboard
                     InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     manager.hideSoftInputFromWindow(searchPosition.getWindowToken(), 0);
 
                     locationItem.setName(label.getText().toString());
+                    Log.d(TAG, locationItem.getName());
+                    Toast.makeText(AddLocationActivity.this, locationItem.getName(), Toast.LENGTH_SHORT).show();
+
+                    return true;
                 }
                 return false;
             }
@@ -116,8 +116,11 @@ public class AddLocationActivity extends BaseActivity {
                     InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     manager.hideSoftInputFromWindow(searchPosition.getWindowToken(), 0);
 
-                    new ResearchLocation(searchPosition.getText().toString(),
-                                         AddLocationActivity.this).execute();
+                    ResearchLocation research = new ResearchLocation(searchPosition.getText().toString(),
+                                         AddLocationActivity.this);
+
+                    research.execute();
+
                     return true;
                 }
                 return false;
@@ -146,6 +149,11 @@ public class AddLocationActivity extends BaseActivity {
             });
         }
 
+        this.locationItem = new LocationItem(this.label.getText().toString(),
+                this.radiusBar.getProgress(),
+                new LatLng(0.0, 0.0),
+                RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this)));
+
         this.done = (FloatingActionButton) this.findViewById(R.id.newLocationDone);
         this.done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,11 +165,6 @@ public class AddLocationActivity extends BaseActivity {
                 finish();
             }
         });
-
-        this.locationItem = new LocationItem(this.label.getText().toString(),
-                this.radiusBar.getProgress(),
-                new LatLng(0.0, 0.0),
-                RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this)));
     }
 
     @Override

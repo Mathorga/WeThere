@@ -1,14 +1,10 @@
-package keym.dev.rwethereyet.keym.dev.rwethereyet.utils;
+package keym.dev.rwethereyet.keym.dev.rwethereyet.util;
 
-import android.content.Intent;
-import android.location.Location;
 import android.media.Ringtone;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
-
-import java.io.Serializable;
 
 /**
  * Created by Luka on 10/05/2017.
@@ -37,8 +33,8 @@ public class LocationItem implements Parcelable {
         this.name = parcel.readString();
         this.radius = parcel.readInt();
         String coords = parcel.readString();
-        this.location = new LatLng(Double.parseDouble(coords.substring(0, 3)),
-                                   Double.parseDouble(coords.substring(4)));
+        this.location = new LatLng(Double.parseDouble(coords.substring(0, 9)),
+                                   Double.parseDouble(coords.substring(10)));
         this.tone = null;
         parcel.readString();
         this.active = parcel.readByte() != 0;

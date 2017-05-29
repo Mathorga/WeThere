@@ -57,8 +57,13 @@ public class ResearchLocation extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(final Boolean result) {
         if (result) {
             this.caller.moveMapTo(this.position);
+            this.caller.getLocationItem().setLocation(this.position);
         } else {
             Toast.makeText(this.caller, "No match found", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public LatLng getPosition() {
+        return this.position;
     }
 }

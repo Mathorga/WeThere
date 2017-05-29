@@ -12,6 +12,7 @@
         <item name="android:textColorHint">@color/fuscusColorHintText</item>
         <item name="android:editTextColor">@color/fuscusColorText</item>
         <item name="android:colorBackground">@color/fuscusColorBackground</item>
+        <item name="android:colorControlNormal">@color/fuscusColorText</item>
     </style>
 
     <style name="Albus" parent="Theme.AppCompat.Light.NoActionBar">
@@ -25,6 +26,7 @@
         <item name="android:textColorHint">@color/albusColorHintText</item>
         <item name="android:editTextColor">@color/albusColorText</item>
         <item name="android:colorBackground">@color/albusColorBackground</item>
+        <item name="android:colorControlNormal">@color/albusColorText</item>
     </style>
 
 </resources>

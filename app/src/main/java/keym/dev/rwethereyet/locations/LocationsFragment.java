@@ -6,8 +6,6 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,10 +21,9 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
-import keym.dev.rwethereyet.MainActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.addlocation.AddLocationActivity;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.utils.LocationItem;
+import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
 
 import static android.app.Activity.RESULT_OK;
 

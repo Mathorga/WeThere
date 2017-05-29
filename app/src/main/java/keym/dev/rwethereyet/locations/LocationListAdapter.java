@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import keym.dev.rwethereyet.R;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.utils.LocationItem;
+import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
 
 /**
  * Created by Luka on 09/05/2017.
