@@ -44,6 +44,8 @@ public class SettingsActivity extends BaseActivity {
 
         this.toolbar = (Toolbar) this.findViewById(R.id.settingsToolbar);
         this.setSupportActionBar(this.toolbar);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         this.themeSwitch = (Switch) this.findViewById(R.id.settingsSwitch);
         this.themeSwitch.setChecked(this.getSharedPreferences(PREFERENCES, 0).getInt(PREF_THEME, R.style.Fuscus) == R.style.Fuscus);
@@ -68,5 +70,17 @@ public class SettingsActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.editor.commit();
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        this.onBackPressed();
+        return true;
     }
 }

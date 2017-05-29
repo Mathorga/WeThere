@@ -40,7 +40,8 @@
                 android:ems="10"
                 android:hint="@string/new_location_label_hint"
                 android:inputType="textCapWords"
-                android:textSize="34sp" />
+                android:textSize="34sp"
+                android:imeOptions="actionDone"/>
 
             <TextView
                 android:layout_width="match_parent"
