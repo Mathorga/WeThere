@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_location_activity_name">Aggiungi Location</string>
+    <string name="distance_fragment_name">Distanza</string>
+    <string name="locations_fragment_name">Location</string>
+    <string name="main_menu_settings">Impostazioni</string>
+    <string name="new_location_coords">Posizione:</string>
+    <string name="new_location_label">Etichetta:</string>
+    <string name="new_location_label_hint">Roma</string>
+    <string name="new_location_radius">Raggio</string>
+    <string name="new_location_search_hint">Indirizzo</string>
+    <string name="no_internet_access">Nessun accesso a internet</string>
+    <string name="preference_ringtone_summary">sveglia</string>
+    <string name="preference_ringtone_title">Sveglia Predefinita</string>
+    <string name="preference_theme_summary">tema</string>
+    <string name="preference_theme_title">Tema</string>
+    <string name="setting_theme">Tema</string>
+</resources>

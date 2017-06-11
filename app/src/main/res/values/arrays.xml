@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="theme_entries">
+        <item>@string/theme_fuscus</item>
+        <item>@string/theme_albus</item>
+    </string-array>
+
+    <!-- Android does not support int values for ListPreferences. -->
+    <string-array name="theme_values">
+        <item>@string/theme_fuscus</item>
+        <item>@string/theme_albus</item>
+    </string-array>
+
+</resources>

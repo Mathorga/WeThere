@@ -1,6 +1,7 @@
 <resources
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Fuscus. -->
     <style name="Fuscus" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/fuscusColorPrimary</item>
         <item name="colorPrimaryDark">@color/fuscusColorPrimaryDark</item>
@@ -13,8 +14,20 @@
         <item name="android:editTextColor">@color/fuscusColorText</item>
         <item name="android:colorBackground">@color/fuscusColorBackground</item>
         <item name="android:colorControlNormal">@color/fuscusColorText</item>
+        <item name="android:textColorSecondary">@color/fuscusColorHintText</item>
+        <item name="android:dialogTheme">@style/FuscusDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/FuscusDialogTheme</item>
+    </style>
+    <style name="FuscusDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/fuscusColorAccent</item>
+        <item name="android:textColor">@color/fuscusColorText</item>
+        <item name="android:textColorSecondary">@color/fuscusColorHintText</item>
+        <item name="android:textColorAlertDialogListItem">@color/fuscusColorText</item>
+        <item name="android:background">@color/fuscusColorBackground</item>
+        <item name="android:backgroundTint">@color/fuscusColorBackground</item>
     </style>
 
+    <!-- Albus -->
     <style name="Albus" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/albusColorPrimary</item>
         <item name="colorPrimaryDark">@color/albusColorPrimaryDark</item>
@@ -27,6 +40,16 @@
         <item name="android:editTextColor">@color/albusColorText</item>
         <item name="android:colorBackground">@color/albusColorBackground</item>
         <item name="android:colorControlNormal">@color/albusColorText</item>
+        <item name="android:dialogTheme">@style/AlbusDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/AlbusDialogTheme</item>
+    </style>
+    <style name="AlbusDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/albusColorAccent</item>
+        <item name="android:textColor">@color/albusColorText</item>
+        <item name="android:textColorSecondary">@color/albusColorHintText</item>
+        <item name="android:textColorAlertDialogListItem">@color/albusColorText</item>
+        <item name="android:background">@color/albusColorBackground</item>
+        <item name="android:backgroundTint">@color/albusColorBackground</item>
     </style>
 
 </resources>
