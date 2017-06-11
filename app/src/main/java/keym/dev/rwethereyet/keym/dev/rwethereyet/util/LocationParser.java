@@ -1,7 +1,6 @@
 package keym.dev.rwethereyet.keym.dev.rwethereyet.util;
 
 import android.util.JsonReader;
-import android.util.JsonToken;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -9,12 +8,15 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.CharBuffer;
 
 /**
  * Created by luka on 10/06/17.
@@ -32,11 +34,9 @@ public class LocationParser {
     private static final String ACTIVE_KEY = "active";
 
     private File file;
-    private JSONObject wrapper;
 
     public LocationParser(final File file) {
         this.file = file;
-        this.wrapper = new JSONObject();
     }
 
     /**
@@ -47,22 +47,52 @@ public class LocationParser {
      * If an error occurs while creating a json object.
      */
     public void writeItem(final LocationItem item) throws JSONException {
-        this.wrapper.put(LABEL_KEY, item.getLabel());
-        this.wrapper.put(RADIUS_KEY, item.getRadius());
-        this.wrapper.put(LATITUDE_KEY, item.getLocation().latitude);
-        this.wrapper.put(LONGITUDE_KEY, item.getLocation().longitude);
-        // Put ringtone.
-        this.wrapper.put(ACTIVE_KEY, item.isActive());
+        // Create the new JSON to append to the file.
+        JSONObject newObject = new JSONObject();
+        newObject.put(LABEL_KEY, item.getLabel());
+        newObject.put(RADIUS_KEY, item.getRadius());
+        newObject.put(LATITUDE_KEY, item.getLocation().latitude);
+        newObject.put(LONGITUDE_KEY, item.getLocation().longitude);
+        // TODO Put ringtone.
+        newObject.put(ACTIVE_KEY, item.isActive());
+
+        // Parse existing JSON.
+        String fileContentString = null;
+        if (this.file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(this.file))) {
+                StringBuilder builder = new StringBuilder();
+                String line = reader.readLine();
+                while (line != null) {
+                    builder.append(line);
+                    builder.append("\n");
+                    line = reader.readLine();
+                }
+                fileContentString = builder.toString();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        } else {
+            fileContentString = "{}";
+        }
+
+        Log.d(TAG, fileContentString);
+        // Add the new object to the file content.
+        JSONObject fileContent = new JSONObject(fileContentString);
+        fileContent.put(item.getLabel(), newObject);
 
         try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(this.file))) {
-            out.write(this.wrapper.toString());
-            Log.d(TAG, this.wrapper.toString());
+            out.write(fileContent.toString());
+            Log.d(TAG, fileContent.toString());
         } catch (IOException exception) {
             exception.printStackTrace();
         }
         Log.d(TAG, "Write: \n" + item.toString());
     }
 
+    /**
+     * TODO
+     * @return
+     */
     public LocationItem readItem() {
         String label = null;
         int radius = 0;
