@@ -2,7 +2,6 @@ package keym.dev.rwethereyet.locations;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -16,13 +15,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
+import org.json.JSONException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.addlocation.AddLocationActivity;
+import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
 
 import static android.app.Activity.RESULT_OK;
@@ -37,6 +38,7 @@ public class LocationsFragment extends Fragment {
 
     private static final String TAG = "LocationsFragment";
     private static final int NEW_LOCATION_REQUEST = 1;
+    private static final String LOCATIONS_FILE_NAME = "locations.json";
 
     private View rootView;
     private List<LocationItem> locations;
@@ -45,10 +47,13 @@ public class LocationsFragment extends Fragment {
 
     private LocationListAdapter adapter;
 
+    private LocationParser parser;
+
     @Override
     public View onCreateView(final LayoutInflater inflater,
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
+        this.parser = new LocationParser(new File(this.getContext().getFilesDir(), LOCATIONS_FILE_NAME));
         return inflater.inflate(R.layout.fragment_locations, container, false);
     }
 
@@ -61,51 +66,54 @@ public class LocationsFragment extends Fragment {
         this.locationsView = (ListView) this.rootView.findViewById(R.id.locationsList);
         this.addButton = (FloatingActionButton) this.rootView.findViewById(R.id.addLocation);
 
-        this.locations.add(new LocationItem("Pesaro",
-                5,
-                new LatLng(12.12345, 43.54326),
-                RingtoneManager.getRingtone(this.getActivity(),
-                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-        this.locations.add(new LocationItem("Cesena",
-                5,
-                new LatLng(40.76543, 34.83624),
-                RingtoneManager.getRingtone(this.getActivity(),
-                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-        this.locations.add(new LocationItem("Milano",
-                5,
-                new LatLng(40.76543, 34.83624),
-                RingtoneManager.getRingtone(this.getActivity(),
-                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-        this.locations.add(new LocationItem("Roma",
-                5,
-                new LatLng(40.76543, 34.83624),
-                RingtoneManager.getRingtone(this.getActivity(),
-                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-        this.locations.add(new LocationItem("Bari",
-                5,
-                new LatLng(40.76543, 34.83624),
-                RingtoneManager.getRingtone(this.getActivity(),
-                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-        this.locations.add(new LocationItem("Torino",
-                5,
-                new LatLng(40.76543, 34.83624),
-                RingtoneManager.getRingtone(this.getActivity(),
-                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-        this.locations.add(new LocationItem("Caserta",
-                5,
-                new LatLng(40.76543, 34.83624),
-                RingtoneManager.getRingtone(this.getActivity(),
-                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-        this.locations.add(new LocationItem("Barrea",
-                5,
-                new LatLng(40.76543, 34.83624),
-                RingtoneManager.getRingtone(this.getActivity(),
-                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-        this.locations.add(new LocationItem("San Giustino",
-                5,
-                new LatLng(40.76543, 34.83624),
-                RingtoneManager.getRingtone(this.getActivity(),
-                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+        this.locations.add(this.parser.readItem());
+//
+//        this.locations.add(new LocationItem("Pesaro",
+//                5,
+//                new LatLng(12.12345, 43.54326),
+//                RingtoneManager.getRingtone(this.getActivity(),
+//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+//        this.locations.add(new LocationItem("Cesena",
+//                5,
+//                new LatLng(40.76543, 34.83624),
+//                RingtoneManager.getRingtone(this.getActivity(),
+//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+//        this.locations.add(new LocationItem("Milano",
+//                5,
+//                new LatLng(40.76543, 34.83624),
+//                RingtoneManager.getRingtone(this.getActivity(),
+//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+//        this.locations.add(new LocationItem("Roma",
+//                5,
+//                new LatLng(40.76543, 34.83624),
+//                RingtoneManager.getRingtone(this.getActivity(),
+//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+//        this.locations.add(new LocationItem("Bari",
+//                5,
+//                new LatLng(40.76543, 34.83624),
+//                RingtoneManager.getRingtone(this.getActivity(),
+//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+//        this.locations.add(new LocationItem("Torino",
+//                5,
+//                new LatLng(40.76543, 34.83624),
+//                RingtoneManager.getRingtone(this.getActivity(),
+//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+//        this.locations.add(new LocationItem("Caserta",
+//                5,
+//                new LatLng(40.76543, 34.83624),
+//                RingtoneManager.getRingtone(this.getActivity(),
+//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+//        this.locations.add(new LocationItem("Barrea",
+//                5,
+//                new LatLng(40.76543, 34.83624),
+//                RingtoneManager.getRingtone(this.getActivity(),
+//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+//        this.locations.add(new LocationItem("San Giustino",
+//                5,
+//                new LatLng(40.76543, 34.83624),
+//                RingtoneManager.getRingtone(this.getActivity(),
+//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+
         adapter = new LocationListAdapter(this.getActivity(), R.layout.item_location, this.locations);
         this.locationsView.setAdapter(adapter);
 
@@ -113,7 +121,7 @@ public class LocationsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(view.getContext().getApplicationContext(),
-                        locations.get(position).getName(),
+                        locations.get(position).getLabel(),
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -124,7 +132,7 @@ public class LocationsFragment extends Fragment {
                 Toast.makeText(view.getContext().getApplicationContext(),
                         locations.get(i).getLocation().latitude + ", " + locations.get(i).getLocation().longitude,
                         Toast.LENGTH_SHORT).show();
-                return false;
+                return true;
             }
         });
 
@@ -151,6 +159,12 @@ public class LocationsFragment extends Fragment {
                 } else {
                     this.locations.add((LocationItem) data.getParcelableExtra("result"));
                     adapter.notifyDataSetChanged();
+                    // TODO Write new location on file.
+                    try {
+                        this.parser.writeItem((LocationItem) data.getParcelableExtra("result"));
+                    } catch (JSONException exception) {
+                        exception.printStackTrace();
+                    }
                 }
             }
         } else {

@@ -9,9 +9,9 @@
     <color name="fuscusColorHintText">#777777</color>
 
     <!-- Albus theme colors. -->
-    <color name="albusColorPrimaryDark">#BBBBBB</color>
-    <color name="albusColorPrimary">#DDDDDD</color>
-    <color name="albusColorBackground">#F0F0F0</color>
+    <color name="albusColorPrimaryDark">#999999</color>
+    <color name="albusColorPrimary">#BBBBBB</color>
+    <color name="albusColorBackground">#FFFFFF</color>
     <color name="albusColorAccent">#E0A000</color>
     <color name="albusColorText">#000000</color>
     <color name="albusColorHintText">#666666</color>

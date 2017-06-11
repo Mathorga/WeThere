@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -72,9 +71,9 @@ public class AddLocationActivity extends BaseActivity {
                     InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     manager.hideSoftInputFromWindow(searchPosition.getWindowToken(), 0);
 
-                    locationItem.setName(label.getText().toString());
-                    Log.d(TAG, locationItem.getName());
-                    Toast.makeText(AddLocationActivity.this, locationItem.getName(), Toast.LENGTH_SHORT).show();
+                    locationItem.setLabel(label.getText().toString());
+                    Log.d(TAG, locationItem.getLabel());
+                    Toast.makeText(AddLocationActivity.this, locationItem.getLabel(), Toast.LENGTH_SHORT).show();
 
                     return true;
                 }

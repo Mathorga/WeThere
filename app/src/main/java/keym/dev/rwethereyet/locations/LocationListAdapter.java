@@ -42,11 +42,11 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
             Switch active = (Switch) view.findViewById(R.id.locationActive);
 
             if (name != null) {
-                name.setText(item.getName());
+                name.setText(item.getLabel());
             }
 
             if (coordinates != null) {
-                coordinates.setText(item.getLocation().latitude + " - " + item.getLocation().longitude);
+                coordinates.setText(item.getLocation().latitude + " : " + item.getLocation().longitude);
             }
 
             if (active != null) {

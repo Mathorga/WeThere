@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
@@ -16,15 +16,13 @@
             android:layout_height="?actionBarSize"
             android:background="?colorPrimary"
             android:elevation="4dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:titleTextColor="?RWTYTextColor" />
 
-        <Switch
-            android:id="@+id/settingsSwitch"
+        <FrameLayout
+            android:id="@+id/settingsFragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/setting_theme"
-            android:textSize="34sp"
-            android:textColor="?RWTYTextColor"/>
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
