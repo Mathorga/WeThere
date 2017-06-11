@@ -66,7 +66,7 @@ public class LocationsFragment extends Fragment {
         this.locationsView = (ListView) this.rootView.findViewById(R.id.locationsList);
         this.addButton = (FloatingActionButton) this.rootView.findViewById(R.id.addLocation);
 
-        this.locations.add(this.parser.readItem());
+//        this.locations.add(this.parser.readItem());
 //
 //        this.locations.add(new LocationItem("Pesaro",
 //                5,
@@ -157,14 +157,14 @@ public class LocationsFragment extends Fragment {
                 if (data == null) {
                     Log.d(TAG, "Intent is NULL");
                 } else {
-                    this.locations.add((LocationItem) data.getParcelableExtra("result"));
-                    adapter.notifyDataSetChanged();
-                    // TODO Write new location on file.
+                    // Write new location on file.
                     try {
                         this.parser.writeItem((LocationItem) data.getParcelableExtra("result"));
                     } catch (JSONException exception) {
                         exception.printStackTrace();
                     }
+                    this.locations.add((LocationItem) data.getParcelableExtra("result"));
+                    adapter.notifyDataSetChanged();
                 }
             }
         } else {
