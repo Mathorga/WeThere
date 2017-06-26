@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,6 @@ public class LocationsFragment extends Fragment {
 
     private static final String TAG = "LocationsFragment";
     private static final int NEW_LOCATION_REQUEST = 1;
-    private static final String LOCATIONS_FILE_NAME = "locations.json";
 
     private View rootView;
     private List<LocationItem> locations;
@@ -53,7 +51,7 @@ public class LocationsFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater,
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
-        this.parser = new LocationParser(new File(this.getContext().getFilesDir(), LOCATIONS_FILE_NAME));
+        this.parser = new LocationParser(this.getContext());
         return inflater.inflate(R.layout.fragment_locations, container, false);
     }
 
@@ -66,6 +64,7 @@ public class LocationsFragment extends Fragment {
         this.locationsView = (ListView) this.rootView.findViewById(R.id.locationsList);
         this.addButton = (FloatingActionButton) this.rootView.findViewById(R.id.addLocation);
 
+        this.locations = this.parser.readAllItems();
 //        this.locations.add(this.parser.readItem());
 //
 //        this.locations.add(new LocationItem("Pesaro",
@@ -157,13 +156,19 @@ public class LocationsFragment extends Fragment {
                 if (data == null) {
                     Log.d(TAG, "Intent is NULL");
                 } else {
+                    LocationItem item = data.getParcelableExtra("result");
+
+                    if (item.getId().equals(LocationItem.ID_UNDEFINED)) {
+                        item.setId(this.parser.getNextIndex());
+                    }
                     // Write new location on file.
                     try {
-                        this.parser.writeItem((LocationItem) data.getParcelableExtra("result"));
-                    } catch (JSONException exception) {
+                        this.parser.writeItem(item);
+                    } catch(JSONException exception) {
                         exception.printStackTrace();
                     }
-                    this.locations.add((LocationItem) data.getParcelableExtra("result"));
+
+                    this.locations.add(item);
                     adapter.notifyDataSetChanged();
                 }
             }

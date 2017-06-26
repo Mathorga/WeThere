@@ -6,6 +6,7 @@
             translatable="false">WeThere?</string>
     <string name="preferences_key" translatable="false">RWTYPreferences</string>
     <string name="no_internet_access">No internet access</string>
+    <string name="locations_file_name">locations.json</string>
 
     <!-- MainActivity. -->
     <string name="main_activity_name" translatable="false">Main</string>
@@ -35,6 +36,7 @@
     <string name="preference_ringtone_key" translatable="false">Ringtone</string>
     <string name="preference_ringtone_title">Default Ringtone</string>
     <string name="preference_ringtone_summary">ringtone</string>
+    <string name="preference_location_index_key">index</string>
 
     <!-- Themes. -->
     <string name="theme_fuscus" translatable="false">Fuscus</string>
