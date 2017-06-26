@@ -12,24 +12,30 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class LocationItem implements Parcelable {
 
+    public static final Integer ID_UNDEFINED = -1;
+
+    private Integer id;
     private String label;
     private Integer radius;
     private LatLng location;
     private Ringtone tone;
-    private boolean active;
+    private Boolean active;
 
-    public LocationItem(final String label,
+    public LocationItem(final Integer id,
+                        final String label,
                         final Integer radius,
                         final LatLng location,
                         final Ringtone tone) {
-        new LocationItem(label, radius, location, tone, false);
+        new LocationItem(id, label, radius, location, tone, false);
     }
 
-    public LocationItem(final String label,
+    public LocationItem(final Integer id,
+                        final String label,
                         final Integer radius,
                         final LatLng location,
                         final Ringtone tone,
                         final Boolean active) {
+        this.id = id;
         this.label = label;
         this.radius = radius;
         this.location = location;
@@ -38,6 +44,8 @@ public class LocationItem implements Parcelable {
     }
 
     public LocationItem(final Parcel parcel) {
+        // Read id.
+        this.id = parcel.readInt();
         // Read name.
         this.label = parcel.readString();
         // Read radius.
@@ -51,6 +59,14 @@ public class LocationItem implements Parcelable {
         parcel.readString();
         // Read whether it's active or not.
         this.active = parcel.readByte() != 0;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(final Integer id) {
+        this.id = id;
     }
 
     public String getLabel() {
@@ -81,7 +97,7 @@ public class LocationItem implements Parcelable {
         return this.active;
     }
 
-    public void setActive(final boolean active) {
+    public void setActive(final Boolean active) {
         this.active = active;
     }
 
@@ -91,7 +107,9 @@ public class LocationItem implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
+    public void writeToParcel(final Parcel parcel, int i) {
+        // Write id.
+        parcel.writeInt(this.id);
         // Write name.
         parcel.writeString(this.label);
         // Write radius.
@@ -105,20 +123,20 @@ public class LocationItem implements Parcelable {
         parcel.writeByte((byte) (this.active ? 1 : 0));
     }
 
-    public static final Parcelable.Creator<LocationItem> CREATOR
-            = new Parcelable.Creator<LocationItem>() {
-        public LocationItem createFromParcel(Parcel parcel) {
+    public static final Parcelable.Creator<LocationItem> CREATOR = new Parcelable.Creator<LocationItem>() {
+        public LocationItem createFromParcel(final Parcel parcel) {
             return new LocationItem(parcel);
         }
 
-        public LocationItem[] newArray(int size) {
+        public LocationItem[] newArray(final int size) {
             return new LocationItem[size];
         }
     };
 
     @Override
     public String toString() {
-        return "Label: " + this.label + "\n" +
+        return "Id: " + this.id + "\n" +
+               "Label: " + this.label + "\n" +
                "Radius: " + this.radius + "\n" +
                "Location: " + this.location + "\n" +
                "Ringtone: " + this.tone + "\n" +

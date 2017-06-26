@@ -4,9 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -29,6 +30,8 @@ import com.google.android.gms.maps.model.LatLng;
 import keym.dev.rwethereyet.BaseActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
+import keym.dev.rwethereyet.settings.SettingsActivity;
 
 /**
  * Created by luka on 11/05/17.
@@ -72,7 +75,7 @@ public class AddLocationActivity extends BaseActivity {
                     manager.hideSoftInputFromWindow(searchPosition.getWindowToken(), 0);
 
                     locationItem.setLabel(label.getText().toString());
-                    Log.d(TAG, locationItem.getLabel());
+                    Log.d(TAG, locationItem.getLabel() + "\n" + locationItem.getId());
                     Toast.makeText(AddLocationActivity.this, locationItem.getLabel(), Toast.LENGTH_SHORT).show();
 
                     return true;
@@ -148,17 +151,20 @@ public class AddLocationActivity extends BaseActivity {
             });
         }
 
-        this.locationItem = new LocationItem(this.label.getText().toString(),
-                this.radiusBar.getProgress(),
-                new LatLng(0.0, 0.0),
-                RingtoneManager.getRingtone(this, RingtoneManager.getValidRingtoneUri(this)));
+        this.locationItem = new LocationItem(LocationItem.ID_UNDEFINED,
+                                             this.label.getText().toString(),
+                                             this.radiusBar.getProgress(),
+                                             new LatLng(0.0, 0.0),
+                                             null,
+                                             false);
 
         this.done = (FloatingActionButton) this.findViewById(R.id.newLocationDone);
         this.done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Return locationItem to the MainActivity.
+                Log.d(TAG, locationItem.toString());
                 Intent returnIntent = new Intent();
+
                 returnIntent.putExtra("result", locationItem);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();

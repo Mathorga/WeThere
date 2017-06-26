@@ -17,6 +17,8 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
 
     private static final String TAG = "BaseActivity";
 
+    protected static final String INDEX_PREFERENCES_NAME = "index";
+
     protected static final String PREF_THEME = "Theme";
 
     @Override
