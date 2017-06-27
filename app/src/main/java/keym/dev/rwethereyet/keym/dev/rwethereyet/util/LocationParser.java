@@ -57,8 +57,6 @@ public class LocationParser {
      * If an error occurs while creating a json object.
      */
     public void writeItem(final LocationItem item) throws JSONException {
-        //Log.d(TAG, item.toString());
-
         // Obtain currently saved object.
         JSONObject fileContent = this.parseFile();
 
@@ -73,14 +71,11 @@ public class LocationParser {
             // TODO Put ringtone.
             newObject.put(ACTIVE_KEY, item.isActive());
 
-
             // Add the new object to the file content.
             fileContent.put(String.valueOf(item.getId()), newObject);
-            Log.d(TAG, "New File:\n" + fileContent.toString());
             out.write(fileContent.toString());
             this.nextIndex++;
-            Log.d(TAG, "WRITE:\n" + this.nextIndex);
-        } catch (JSONException | IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
     }
@@ -132,7 +127,6 @@ public class LocationParser {
      * A list of all saved LocationItems, in the order they're saved.
      */
     public List<LocationItem> readAllItems() {
-
         List<LocationItem> items = new ArrayList<>();
 
         try {
@@ -184,18 +178,15 @@ public class LocationParser {
         String fileContentString = null;
         if (this.file.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(this.file))) {
-                Log.d(TAG, "Reading...");
                 StringBuilder builder = new StringBuilder();
                 String line = reader.readLine();
                 while (line != null) {
-                    Log.d(TAG, "Line:\n" + line);
                     builder.append(line);
                     builder.append("\n");
                     line = reader.readLine();
                 }
                 if (builder.length() == 0) {
                     // The file is empty.
-                    Log.d(TAG, "The file is empty.");
                     fileContentString = "{}";
                 } else {
                     // The file is not empty.
@@ -206,10 +197,8 @@ public class LocationParser {
             }
         } else {
             // The file does not exist.
-            Log.d(TAG, "The file does not exist.");
             fileContentString = "{}";
         }
-        Log.d(TAG, "Parsed:\n" + fileContentString);
         return new JSONObject(fileContentString);
     }
 

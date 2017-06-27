@@ -3357,9 +3357,10 @@ containing a value of this type.
         public static final int ic_map_white_24dp=0x7f020072;
         public static final int ic_more_vert_custom_24dp=0x7f020073;
         public static final int ic_more_vert_white_24dp=0x7f020074;
-        public static final int list_divider=0x7f020075;
-        public static final int navigation_empty_icon=0x7f020076;
-        public static final int notification_template_icon_bg=0x7f020077;
+        public static final int ic_stat_external=0x7f020075;
+        public static final int list_divider=0x7f020076;
+        public static final int navigation_empty_icon=0x7f020077;
+        public static final int notification_template_icon_bg=0x7f020078;
     }
     public static final class id {
         public static final int action0=0x7f0e009b;
@@ -3664,11 +3665,12 @@ containing a value of this type.
         public static final int common_open_on_phone=0x7f070021;
         public static final int common_signin_button_text=0x7f070022;
         public static final int common_signin_button_text_long=0x7f070023;
+        public static final int destination_reached=0x7f070045;
         public static final int distance_fragment_name=0x7f070027;
-        public static final int google_maps_key=0x7f070045;
-        public static final int locations_file_name=0x7f070046;
+        public static final int google_maps_key=0x7f070046;
+        public static final int locations_file_name=0x7f070047;
         public static final int locations_fragment_name=0x7f070028;
-        public static final int main_activity_name=0x7f070047;
+        public static final int main_activity_name=0x7f070048;
         public static final int main_menu_settings=0x7f070029;
         public static final int new_location_coords=0x7f07002a;
         public static final int new_location_label=0x7f07002b;
@@ -3676,21 +3678,21 @@ containing a value of this type.
         public static final int new_location_radius=0x7f07002d;
         public static final int new_location_search_hint=0x7f07002e;
         public static final int no_internet_access=0x7f07002f;
-        public static final int preference_location_index_key=0x7f070048;
-        public static final int preference_ringtone_key=0x7f070049;
+        public static final int preference_location_index_key=0x7f070049;
+        public static final int preference_ringtone_key=0x7f07004a;
         public static final int preference_ringtone_summary=0x7f070030;
         public static final int preference_ringtone_title=0x7f070031;
-        public static final int preference_theme_default=0x7f07004a;
-        public static final int preference_theme_key=0x7f07004b;
+        public static final int preference_theme_default=0x7f07004b;
+        public static final int preference_theme_key=0x7f07004c;
         public static final int preference_theme_summary=0x7f070032;
         public static final int preference_theme_title=0x7f070033;
-        public static final int preferences_key=0x7f07004c;
+        public static final int preferences_key=0x7f07004d;
         public static final int search_menu_title=0x7f070024;
         public static final int setting_theme=0x7f070034;
-        public static final int settings_activity_name=0x7f07004d;
+        public static final int settings_activity_name=0x7f07004e;
         public static final int status_bar_notification_info_overflow=0x7f070025;
-        public static final int theme_albus=0x7f07004e;
-        public static final int theme_fuscus=0x7f07004f;
+        public static final int theme_albus=0x7f07004f;
+        public static final int theme_fuscus=0x7f070050;
     }
     public static final class style {
         public static final int Albus=0x7f09008c;
