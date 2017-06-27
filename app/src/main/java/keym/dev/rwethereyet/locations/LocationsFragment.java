@@ -1,12 +1,18 @@
 package keym.dev.rwethereyet.locations;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +26,15 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import keym.dev.rwethereyet.MainActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.addlocation.AddLocationActivity;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.settings.SettingsActivity;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Created by luka on 23/05/17.
@@ -131,6 +140,25 @@ public class LocationsFragment extends Fragment {
                 Toast.makeText(view.getContext().getApplicationContext(),
                         locations.get(i).getLocation().latitude + ", " + locations.get(i).getLocation().longitude,
                         Toast.LENGTH_SHORT).show();
+
+                // ---------------------------------------------------------------------------------
+                Intent openAppIntent = new Intent(getActivity(), MainActivity.class);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity())
+                        .setSmallIcon(R.drawable.ic_stat_external)
+                        .setContentTitle(getActivity().getResources().getString(R.string.destination_reached))
+                        .setContentText(locations.get(i).getLabel())
+                        .setContentIntent(PendingIntent.getActivity(getActivity(), 1, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT));// Start alarm.
+                Uri alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                Ringtone ringtone = RingtoneManager.getRingtone(getActivity().getApplicationContext(), alarm);
+                ringtone.play();
+                // ---------------------------------------------------------------------------------
+
+                // Set an ID for the notification.
+                int notificationId = i;
+                // Get an instance of the NotificationManager service.
+                NotificationManager manager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+                // Build the notification and issue it.
+                manager.notify(notificationId, builder.build());
                 return true;
             }
         });
