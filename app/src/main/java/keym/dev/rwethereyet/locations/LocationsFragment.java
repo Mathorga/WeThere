@@ -1,9 +1,12 @@
 package keym.dev.rwethereyet.locations;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
@@ -13,6 +16,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +33,9 @@ import java.util.List;
 import keym.dev.rwethereyet.MainActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.addlocation.AddLocationActivity;
+import keym.dev.rwethereyet.background.NotificationService;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
-import keym.dev.rwethereyet.settings.SettingsActivity;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -42,10 +46,12 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class LocationsFragment extends Fragment {
 
+    private static final String TAG = "LocationsFragment";
+
     public static final String STATE_ARGUMENT = "state";
 
-    private static final String TAG = "LocationsFragment";
-    private static final int NEW_LOCATION_REQUEST = 1;
+    public static final int NEW_LOCATION_REQUEST = 1;
+    public static final int ALARM_REQUEST = 2;
 
     private View rootView;
     private List<LocationItem> locations;
@@ -54,13 +60,10 @@ public class LocationsFragment extends Fragment {
 
     private LocationListAdapter adapter;
 
-    private LocationParser parser;
-
     @Override
     public View onCreateView(final LayoutInflater inflater,
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
-        this.parser = new LocationParser(this.getContext());
         return inflater.inflate(R.layout.fragment_locations, container, false);
     }
 
@@ -73,54 +76,28 @@ public class LocationsFragment extends Fragment {
         this.locationsView = (ListView) this.rootView.findViewById(R.id.locationsList);
         this.addButton = (FloatingActionButton) this.rootView.findViewById(R.id.addLocation);
 
-        this.locations = this.parser.readAllItems();
-//        this.locations.add(this.parser.readItem());
-//
-//        this.locations.add(new LocationItem("Pesaro",
-//                5,
-//                new LatLng(12.12345, 43.54326),
-//                RingtoneManager.getRingtone(this.getActivity(),
-//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-//        this.locations.add(new LocationItem("Cesena",
-//                5,
-//                new LatLng(40.76543, 34.83624),
-//                RingtoneManager.getRingtone(this.getActivity(),
-//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-//        this.locations.add(new LocationItem("Milano",
-//                5,
-//                new LatLng(40.76543, 34.83624),
-//                RingtoneManager.getRingtone(this.getActivity(),
-//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-//        this.locations.add(new LocationItem("Roma",
-//                5,
-//                new LatLng(40.76543, 34.83624),
-//                RingtoneManager.getRingtone(this.getActivity(),
-//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-//        this.locations.add(new LocationItem("Bari",
-//                5,
-//                new LatLng(40.76543, 34.83624),
-//                RingtoneManager.getRingtone(this.getActivity(),
-//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-//        this.locations.add(new LocationItem("Torino",
-//                5,
-//                new LatLng(40.76543, 34.83624),
-//                RingtoneManager.getRingtone(this.getActivity(),
-//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-//        this.locations.add(new LocationItem("Caserta",
-//                5,
-//                new LatLng(40.76543, 34.83624),
-//                RingtoneManager.getRingtone(this.getActivity(),
-//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-//        this.locations.add(new LocationItem("Barrea",
-//                5,
-//                new LatLng(40.76543, 34.83624),
-//                RingtoneManager.getRingtone(this.getActivity(),
-//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
-//        this.locations.add(new LocationItem("San Giustino",
-//                5,
-//                new LatLng(40.76543, 34.83624),
-//                RingtoneManager.getRingtone(this.getActivity(),
-//                        RingtoneManager.getValidRingtoneUri(this.getActivity()))));
+        this.locations = new LocationParser(this.getContext()).readAllItems();
+
+        // Register locations' alarms.
+        LocationManager manager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
+        int permission = ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            for (LocationItem item : this.locations) {
+                if (item.isActive()) {
+                    Intent alarmIntent = new Intent(this.getContext(), NotificationService.class);
+                    alarmIntent.putExtra("location", item);
+                    PendingIntent pendingAlarm = PendingIntent.getService(this.getContext(),
+                                                                          ALARM_REQUEST,
+                                                                          alarmIntent,
+                                                                          PendingIntent.FLAG_UPDATE_CURRENT);
+                    manager.addProximityAlert(item.getLocation().latitude,
+                                              item.getLocation().longitude,
+                                              item.getRadius() * LocationItem.M_TO_KM,
+                                              -1,
+                                              pendingAlarm);
+                }
+            }
+        }
 
         adapter = new LocationListAdapter(this.getActivity(), R.layout.item_location, this.locations);
         this.locationsView.setAdapter(adapter);
@@ -138,27 +115,22 @@ public class LocationsFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(view.getContext().getApplicationContext(),
-                        locations.get(i).getLocation().latitude + ", " + locations.get(i).getLocation().longitude,
-                        Toast.LENGTH_SHORT).show();
+                               locations.get(i).getLocation().latitude + ", " + locations.get(i).getLocation().longitude,
+                               Toast.LENGTH_SHORT).show();
 
                 // ---------------------------------------------------------------------------------
-                Intent openAppIntent = new Intent(getActivity(), MainActivity.class);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity())
-                        .setSmallIcon(R.drawable.ic_stat_external)
-                        .setContentTitle(getActivity().getResources().getString(R.string.destination_reached))
-                        .setContentText(locations.get(i).getLabel())
-                        .setContentIntent(PendingIntent.getActivity(getActivity(), 1, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT));// Start alarm.
-                Uri alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-                Ringtone ringtone = RingtoneManager.getRingtone(getActivity().getApplicationContext(), alarm);
-                ringtone.play();
+                // Test item deletion.
+                adapter.remove(locations.get(i));
+                new LocationParser(getContext()).deleteItem(i);
                 // ---------------------------------------------------------------------------------
 
-                // Set an ID for the notification.
-                int notificationId = i;
-                // Get an instance of the NotificationManager service.
-                NotificationManager manager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-                // Build the notification and issue it.
-                manager.notify(notificationId, builder.build());
+                // ---------------------------------------------------------------------------------
+                // Test notifications.
+//                Intent notificationIntent = new Intent(getContext(), NotificationService.class);
+//                notificationIntent.putExtra("location", locations.get(i));
+//                notificationIntent.putExtra(LocationManager.KEY_PROXIMITY_ENTERING, true);
+//                getActivity().startService(notificationIntent);
+                // ---------------------------------------------------------------------------------
                 return true;
             }
         });
@@ -187,11 +159,12 @@ public class LocationsFragment extends Fragment {
                     LocationItem item = data.getParcelableExtra("result");
 
                     if (item.getId().equals(LocationItem.ID_UNDEFINED)) {
-                        item.setId(this.parser.getNextIndex());
+                        Log.d(TAG, "Id set to " + new LocationParser(this.getContext()).getNextIndex());
+                        item.setId(new LocationParser(this.getContext()).getNextIndex());
                     }
                     // Write new location on file.
                     try {
-                        this.parser.writeItem(item);
+                        new LocationParser(this.getContext()).writeItem(item);
                     } catch(JSONException exception) {
                         exception.printStackTrace();
                     }

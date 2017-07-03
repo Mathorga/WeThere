@@ -28,7 +28,7 @@
     <string name="setting_theme">Theme</string>
 
     <!-- NotificationService. -->
-    <string name="destination_reached">Here you are!</string>
+    <string name="destination_reached">Here we are!</string>
 
     <!-- Preferences. -->
     <string name="preference_theme_key"

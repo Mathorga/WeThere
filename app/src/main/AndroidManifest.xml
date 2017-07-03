@@ -17,6 +17,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:label="@string/app_name">
             <intent-filter
                 android:label="@string/app_name">
@@ -27,16 +28,14 @@
 
         <activity
             android:name=".addlocation.AddLocationActivity"
+            android:launchMode="singleTask"
             android:label="@string/add_location_activity_name"
-            android:windowSoftInputMode="adjustNothing"></activity>
+            android:windowSoftInputMode="adjustPan"></activity>
 
         <activity
             android:name=".settings.SettingsActivity"
-            android:label="@string/settings_activity_name"
-            android:windowSoftInputMode="adjustNothing"></activity>
-
-        <service
-            android:name=".background.Triggerer"></service>
+            android:launchMode="singleTask"
+            android:label="@string/settings_activity_name"></activity>
 
         <service
             android:name=".background.NotificationService">

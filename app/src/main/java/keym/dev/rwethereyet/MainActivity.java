@@ -1,7 +1,10 @@
 package keym.dev.rwethereyet;
 
 import android.Manifest;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -10,13 +13,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import keym.dev.rwethereyet.background.Triggerer;
+import keym.dev.rwethereyet.background.NotificationService;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.FragmentTabAdapter;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
 import keym.dev.rwethereyet.settings.SettingsActivity;
@@ -49,9 +50,6 @@ public class MainActivity extends BaseActivity {
         ActivityCompat.requestPermissions(this,
                                           new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                           1);
-
-        Intent triggererIntent = new Intent(this, Triggerer.class);
-        this.startService(triggererIntent);
 
         this.pager = (ViewPager) this.findViewById(R.id.mainPager);
         this.adapter = new FragmentTabAdapter(this.getSupportFragmentManager());

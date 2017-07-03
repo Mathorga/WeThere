@@ -14,6 +14,8 @@ public class LocationItem implements Parcelable {
 
     public static final Integer ID_UNDEFINED = -1;
 
+    public static final int M_TO_KM = 1000;
+
     private Integer id;
     private String label;
     private Integer radius;

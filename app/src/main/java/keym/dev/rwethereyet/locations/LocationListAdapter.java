@@ -1,6 +1,13 @@
 package keym.dev.rwethereyet.locations;
 
+import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +16,21 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
 import java.util.List;
 
 import keym.dev.rwethereyet.R;
+import keym.dev.rwethereyet.background.NotificationService;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
 
 /**
  * Created by Luka on 09/05/2017.
  */
 public class LocationListAdapter extends ArrayAdapter<LocationItem> {
+
+    private static final String TAG = "LocationListAdapter";
 
     private int layoutResource;
     
@@ -54,6 +67,37 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         item.setActive(b);
+
+                        // Register the alarm for the location.
+                        LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+                        int permission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+                        if (permission == PackageManager.PERMISSION_GRANTED) {
+                            Intent alarmIntent = new Intent(getContext(), NotificationService.class);
+                            alarmIntent.putExtra("location", item);
+                            PendingIntent pendingAlarm = PendingIntent.getService(getContext(),
+                                                                                  LocationsFragment.ALARM_REQUEST,
+                                                                                  alarmIntent,
+                                                                                  PendingIntent.FLAG_UPDATE_CURRENT);
+                            if (item.isActive()) {
+                                // Set alarm.
+                                manager.addProximityAlert(item.getLocation().latitude,
+                                                          item.getLocation().longitude,
+                                                          item.getRadius() * LocationItem.M_TO_KM,
+                                                          -1,
+                                                          pendingAlarm);
+                            } else {
+                                // Remove alarm.
+                                manager.removeProximityAlert(pendingAlarm);
+                            }
+                        }
+
+                        // Save on file.
+                        LocationParser parser = new LocationParser(LocationListAdapter.this.getContext());
+                        try {
+                            parser.updateItem(item);
+                        } catch (JSONException exception) {
+                            exception.printStackTrace();
+                        }
                     }
                 });
                 active.setChecked(item.isActive());
