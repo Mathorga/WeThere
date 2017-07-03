@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -46,7 +47,6 @@ public class LocationParser {
         } catch (JSONException exception) {
             exception.printStackTrace();
         }
-        Log.d(TAG, "" + this.nextIndex);
     }
 
     /**
@@ -72,7 +72,8 @@ public class LocationParser {
             newObject.put(ACTIVE_KEY, item.isActive());
 
             // Add the new object to the file content.
-            fileContent.put(String.valueOf(item.getId()), newObject);
+            fileContent.put(String.valueOf(this.nextIndex), newObject);
+            Log.d(TAG, newObject.toString());
             out.write(fileContent.toString());
             this.nextIndex++;
         } catch (IOException exception) {
@@ -84,7 +85,7 @@ public class LocationParser {
      * TODO
      * @return
      */
-//    public LocationItem readItem(final String id) {
+//    public LocationItem readItem(final Int id) {
 //        String label = null;
 //        int radius = 0;
 //        double latitude = 0.0;
@@ -152,25 +153,79 @@ public class LocationParser {
     }
 
     /**
+     * Deletes a LocationItem from the save file and
+     * updates the other elements' indexes accordingly.
+     * @param itemId
+     * The index of the element that needs to be removed.
+     * @return
+     * The list of LocationItems with updated indexes.
+     */
+    public List<LocationItem> deleteItem(final int itemId) {
+        List<LocationItem> items = this.readAllItems();
+
+        // Remove the item.
+        items.remove(itemId);
+
+        try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(this.file))) {
+
+            // Accordingly update the indexes of the other items.
+            for (int i = itemId; i < items.size(); i++) {
+                items.get(i).setId(i);
+            }
+
+            // Write items back to the file.
+            JSONObject fileContent = new JSONObject("{}");
+            for (LocationItem item : items) {
+                JSONObject newObject = new JSONObject();
+                newObject.put(ID_KEY, item.getId());
+                newObject.put(LABEL_KEY, item.getLabel());
+                newObject.put(RADIUS_KEY, item.getRadius());
+                newObject.put(LATITUDE_KEY, item.getLocation().latitude);
+                newObject.put(LONGITUDE_KEY, item.getLocation().longitude);
+                // TODO Put ringtone.
+                newObject.put(ACTIVE_KEY, item.isActive());
+
+                // Add the new object to the file content.
+                fileContent.put(String.valueOf(item.getId()), newObject);
+            }
+            Log.d(TAG, "Deleted, items left: " + fileContent);
+            out.write(fileContent.toString());
+
+        } catch (JSONException | IOException exception) {
+            exception.printStackTrace();
+        }
+        Log.d(TAG, "NextIndex: " + String.valueOf(items.size()));
+        this.nextIndex = items.size();
+        return items;
+    }
+
+    /**
      * TODO
      * @return
      */
-    public boolean updateItem(final LocationItem item) {
-        try {
-            JSONObject fileContent = this.parseFile();
-            Iterator<String> iterator = fileContent.keys();
+    public boolean updateItem(final LocationItem item) throws JSONException {
+        // Obtain currently saved object.
+        JSONObject fileContent = this.parseFile();
 
-            while (iterator.hasNext()) {
-                String key = iterator.next();
-                JSONObject object = (JSONObject) fileContent.get(key);
-                if (item.getId().equals(object.getInt(ID_KEY))) {
-                    // TODO
-                }
-            }
-        } catch (JSONException exception) {
+        try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(this.file))) {
+            // Create the new JSON to append to the file.
+            JSONObject newObject = new JSONObject();
+            newObject.put(ID_KEY, item.getId());
+            newObject.put(LABEL_KEY, item.getLabel());
+            newObject.put(RADIUS_KEY, item.getRadius());
+            newObject.put(LATITUDE_KEY, item.getLocation().latitude);
+            newObject.put(LONGITUDE_KEY, item.getLocation().longitude);
+            // TODO Put ringtone.
+            newObject.put(ACTIVE_KEY, item.isActive());
+
+            // Add the new object to the file content.
+            fileContent.put(String.valueOf(item.getId()), newObject);
+            out.write(fileContent.toString());
+            return true;
+        } catch (IOException exception) {
             exception.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     private JSONObject parseFile() throws JSONException {

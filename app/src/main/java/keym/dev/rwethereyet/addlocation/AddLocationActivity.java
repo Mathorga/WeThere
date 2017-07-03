@@ -70,17 +70,23 @@ public class AddLocationActivity extends BaseActivity {
                     i == EditorInfo.IME_ACTION_DONE ||
                     i == EditorInfo.IME_ACTION_GO) {
 
-                    // hide virtual keyboard
+                    // Hide virtual keyboard.
                     InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     manager.hideSoftInputFromWindow(searchPosition.getWindowToken(), 0);
 
-                    locationItem.setLabel(label.getText().toString());
-                    Log.d(TAG, locationItem.getLabel() + "\n" + locationItem.getId());
-                    Toast.makeText(AddLocationActivity.this, locationItem.getLabel(), Toast.LENGTH_SHORT).show();
-
+                    label.clearFocus();
                     return true;
                 }
                 return false;
+            }
+        });
+        this.label.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b) {
+                    // If focus is lost.
+                    locationItem.setLabel(label.getText().toString());
+                }
             }
         });
 
@@ -96,7 +102,11 @@ public class AddLocationActivity extends BaseActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                // Hide virtual keyboard.
+                InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(searchPosition.getWindowToken(), 0);
+                // Clear focus on the label field.
+                label.clearFocus();
             }
 
             @Override
