@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '26.0.0'
     defaultConfig {
         applicationId "keym.dev.rwethereyet"
         minSdkVersion 21
@@ -28,5 +27,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:24.2.1'
-    compile 'com.google.android.gms:play-services-maps:10.2.4'
+    //compile 'com.google.android.gms:play-services-maps:10.2.4'
+    compile 'com.google.android.gms:play-services-maps:11.6.0'
 }
