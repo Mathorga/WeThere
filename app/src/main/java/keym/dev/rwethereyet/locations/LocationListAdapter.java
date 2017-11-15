@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 import keym.dev.rwethereyet.R;
@@ -31,6 +33,8 @@ import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
 public class LocationListAdapter extends ArrayAdapter<LocationItem> {
 
     private static final String TAG = "LocationListAdapter";
+
+    private static final NumberFormat coordFormat = new DecimalFormat("##.########");
 
     private int layoutResource;
     
@@ -59,7 +63,7 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
             }
 
             if (coordinates != null) {
-                coordinates.setText(item.getLocation().latitude + " : " + item.getLocation().longitude);
+                coordinates.setText(coordFormat.format(item.getLocation().latitude) + " : " + coordFormat.format(item.getLocation().longitude));
             }
 
             if (active != null) {
