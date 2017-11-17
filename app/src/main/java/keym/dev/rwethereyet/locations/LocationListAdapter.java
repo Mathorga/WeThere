@@ -5,7 +5,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,6 +81,7 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
                         if (permission == PackageManager.PERMISSION_GRANTED) {
                             Intent alarmIntent = new Intent(getContext(), NotificationService.class);
                             alarmIntent.putExtra("location", item);
+                            Log.d(TAG, "Put LocationItem extra");
                             PendingIntent pendingAlarm = PendingIntent.getService(getContext(),
                                                                                   LocationsFragment.ALARM_REQUEST,
                                                                                   alarmIntent,
@@ -89,6 +93,28 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
                                                           item.getRadius() * LocationItem.M_TO_KM,
                                                           -1,
                                                           pendingAlarm);
+                                Log.d(TAG, "Set proximity alert for " + item.getLabel());
+                                manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
+                                    @Override
+                                    public void onLocationChanged(Location location) {
+                                        Log.d(TAG, "Location changed");
+                                    }
+
+                                    @Override
+                                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                                    }
+
+                                    @Override
+                                    public void onProviderEnabled(String provider) {
+
+                                    }
+
+                                    @Override
+                                    public void onProviderDisabled(String provider) {
+
+                                    }
+                                });
                             } else {
                                 // Remove alarm.
                                 manager.removeProximityAlert(pendingAlarm);

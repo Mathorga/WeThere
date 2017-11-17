@@ -1,24 +1,12 @@
 package keym.dev.rwethereyet.locations;
 
-import android.Manifest;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,21 +17,16 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import keym.dev.rwethereyet.MainActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.addlocation.AddLocationActivity;
 import keym.dev.rwethereyet.background.NotificationService;
-import keym.dev.rwethereyet.background.ProximityIntentReceiver;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Created by luka on 23/05/17.
@@ -84,51 +67,45 @@ public class LocationsFragment extends Fragment {
         this.locations = new LocationParser(this.getContext()).readAllItems();
 
         // Register locations' alarms.
-        LocationManager manager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
-        int permission = ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permission == PackageManager.PERMISSION_GRANTED) {
-            for (LocationItem item : this.locations) {
-                if (item.isActive()) {
+//        LocationManager manager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
+//        int permission = ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+//        if (permission == PackageManager.PERMISSION_GRANTED) {
+//            for (LocationItem item : this.locations) {
+//                if (item.isActive()) {
 //                    Intent alarmIntent = new Intent(this.getContext(), NotificationService.class);
-                    Intent alarmIntent = new Intent(this.getContext(), ProximityIntentReceiver.class).putExtra("location", item);
 //                    PendingIntent pendingAlarm = PendingIntent.getService(this.getContext(),
 //                                                                          ALARM_REQUEST,
 //                                                                          alarmIntent,
 //                                                                          PendingIntent.FLAG_UPDATE_CURRENT);
-                    PendingIntent pendingAlarm = PendingIntent.getBroadcast(this.getContext(),
-                                                                            0,
-                                                                            alarmIntent,
-                                                                            0);
-                    manager.addProximityAlert(item.getLocation().latitude,
-                                              item.getLocation().longitude,
-                                              item.getRadius() * LocationItem.M_TO_KM,
-                                              -1,
-                                              pendingAlarm);
-                    manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                }
-            }
-            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-
-                }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-            });
-        }
+//                    manager.addProximityAlert(item.getLocation().latitude,
+//                                              item.getLocation().longitude,
+//                                              item.getRadius() * LocationItem.M_TO_KM,
+//                                              -1,
+//                                              pendingAlarm);
+//                }
+//            }
+//            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, new LocationListener() {
+//                @Override
+//                public void onLocationChanged(Location location) {
+//                    Log.d(TAG, "Location changed: " + location.getLatitude() + "@" + location.getLongitude());
+//                }
+//
+//                @Override
+//                public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//                }
+//
+//                @Override
+//                public void onProviderEnabled(String provider) {
+//
+//                }
+//
+//                @Override
+//                public void onProviderDisabled(String provider) {
+//
+//                }
+//            });
+//        }
 
         adapter = new LocationListAdapter(this.getActivity(), R.layout.item_location, this.locations);
         this.locationsView.setAdapter(adapter);

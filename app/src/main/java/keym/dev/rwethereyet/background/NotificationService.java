@@ -48,7 +48,7 @@ public class NotificationService extends IntentService {
                                              .setSmallIcon(R.drawable.ic_stat_external)
                                              .setContentTitle(this.getResources().getString(R.string.destination_reached))
 //                                             .setContentText(location.getLabel())
-                                             .setContentIntent(PendingIntent.getService(this, BACK_TO_MAIN_REQUEST, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                                             .setContentIntent(PendingIntent.getActivity(this, BACK_TO_MAIN_REQUEST, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
         // Set an ID for the notification.
 //        int notificationId = location.getId();
