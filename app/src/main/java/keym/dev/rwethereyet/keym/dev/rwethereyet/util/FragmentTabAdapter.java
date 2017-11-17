@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import keym.dev.rwethereyet.Distance.DistanceListFragment;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.locations.LocationsFragment;
 
@@ -24,7 +25,7 @@ public class FragmentTabAdapter extends FragmentStatePagerAdapter {
         this.tabs.add(new Tab(new LocationsFragment(),
                               R.drawable.ic_grade_custom_24dp,
                               R.string.locations_fragment_name));
-        this.tabs.add(new Tab(new Fragment(),
+        this.tabs.add(new Tab(new DistanceListFragment(),
                               R.drawable.ic_map_custom_24dp,
                               R.string.distance_fragment_name));
     }

@@ -38,19 +38,14 @@
             android:launchMode="singleTask"
             android:label="@string/settings_activity_name"></activity>
 
-        <!--<service-->
-            <!--android:name=".background.NotificationService">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="NOTIFICATION_SERVICE"/>-->
-            <!--</intent-filter>-->
-        <!--</service>-->
-
-        <receiver
-            android:name=".background.ProximityIntentReceiver">
+        <service
+            android:name=".background.NotificationService">
             <intent-filter>
                 <action android:name="NOTIFICATION_SERVICE"/>
             </intent-filter>
-        </receiver>
+        </service>
+
+        <service android:name=".background.LocationUpdateService"/>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
