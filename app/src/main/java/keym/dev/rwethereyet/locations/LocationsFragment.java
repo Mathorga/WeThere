@@ -107,8 +107,8 @@ public class LocationsFragment extends Fragment {
 //            });
 //        }
 
-        adapter = new LocationListAdapter(this.getActivity(), R.layout.item_location, this.locations);
-        this.locationsView.setAdapter(adapter);
+        this.adapter = new LocationListAdapter(this.getActivity(), R.layout.item_location, this.locations);
+        this.locationsView.setAdapter(this.adapter);
 
         this.locationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
