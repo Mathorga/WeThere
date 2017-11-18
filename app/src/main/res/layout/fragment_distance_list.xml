@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
-    <SeekBar
-        android:id="@+id/seekBar2"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="336dp"
-        android:layout_height="79dp"
-        android:max="10"
-        android:progress="3"
-        tools:layout_editor_absoluteX="24dp"
-        tools:layout_editor_absoluteY="16dp" />
-</android.support.constraint.ConstraintLayout>
+    <ListView
+        android:id="@+id/distanceList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="2dp"
+        android:clipToPadding="false"
+        android:divider="@drawable/list_divider"
+        tools:listitem="@layout/item_distance" />
+
+</android.support.design.widget.CoordinatorLayout>
