@@ -31,6 +31,7 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
 
     private int layoutResource;
     private LocationManager manager;
+    private LocationListener listener;
 
     public DistanceListAdapter(final Context context, final int layoutResource, List<LocationItem> data) {
         super(context, layoutResource, data);
@@ -58,7 +59,7 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
 
         if (item != null) {
             TextView name = (TextView) view.findViewById(R.id.locationDistanceName);
-            TextView distance = (TextView) view.findViewById(R.id.locationDistance);
+            final TextView distance = (TextView) view.findViewById(R.id.locationDistance);
 
             if (name != null) {
                 name.setText(item.getLabel());
@@ -66,17 +67,56 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
 
             if (distance != null) {
                 if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    Location lastLocation = this.manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    float[] result = new float[1];
-                    if (lastLocation != null) {
-                        Location.distanceBetween(item.getLocation().latitude,
-                                item.getLocation().longitude,
-                                lastLocation.getLatitude(),
-                                lastLocation.getLongitude(),
-                                result);
-                        distance.setText(String.valueOf(result[0]));
+                    ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                    Location lastLocation = this.manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                    float[] result = new float[1];
+
+                    this.listener = new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            float[] result = new float[1];
+                            Location.distanceBetween(item.getLocation().latitude,
+                                    item.getLocation().longitude,
+                                    location.getLatitude(),
+                                    location.getLongitude(),
+                                    result);
+                            distance.setText(String.valueOf(result[0]) + "m");
+                        }
+
+                        @Override
+                        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String s) {
+
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String s) {
+
+                        }
+                    };
+                    try {
+                        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LocationUpdateService.LOCATION_INTERVAL, LocationUpdateService.LOCATION_DISTANCE, this.listener);
+                        Log.d(TAG, "Requested location updates");
+                    } catch (java.lang.SecurityException ex) {
+                        Log.i(TAG, "fail to request location update, ignore", ex);
+                    } catch (IllegalArgumentException ex) {
+                        Log.d(TAG, "gps provider does not exist " + ex.getMessage());
                     }
+
+
+
+//                    if (lastLocation != null) {
+//                        Location.distanceBetween(item.getLocation().latitude,
+//                                                 item.getLocation().longitude,
+//                                                 lastLocation.getLatitude(),
+//                                                 lastLocation.getLongitude(),
+//                                                 result);
+//                        distance.setText(String.valueOf(result[0]));
+//                    }
                 }
             }
         }

@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -109,6 +110,16 @@ public class MainActivity extends BaseActivity {
         });
 
         this.startService(new Intent(this, LocationUpdateService.class));
+    }
+
+    public void refreshDistances(final LocationItem item, final Boolean b) {
+        Fragment fragment = this.adapter.getItem(1);
+        this.getSupportFragmentManager()
+            .beginTransaction()
+            .detach(fragment)
+            .attach(fragment)
+            .commit();
+
     }
 
 //    @Override
