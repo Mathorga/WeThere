@@ -25,6 +25,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 
+import keym.dev.rwethereyet.MainActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.background.NotificationService;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
@@ -39,10 +40,12 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
 
     private static final NumberFormat coordFormat = new DecimalFormat("##.########");
 
+    private final Context context;
     private int layoutResource;
     
     public LocationListAdapter(final Context context, final int layoutResource, List<LocationItem> data) {
         super(context, layoutResource, data);
+        this.context = context;
         this.layoutResource = layoutResource;
     }
 
@@ -74,6 +77,11 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         item.setActive(b);
+
+                        // Notify activation/disactivation.
+                        if (context instanceof MainActivity) {
+                            ((MainActivity) context).refreshDistances(item, b);
+                        }
 
                         // Register the alarm for the location.
                         LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);

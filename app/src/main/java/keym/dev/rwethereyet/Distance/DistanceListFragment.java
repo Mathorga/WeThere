@@ -45,7 +45,13 @@ public class DistanceListFragment extends Fragment {
         this.locations = new ArrayList<>();
         this.distancesView = (ListView) this.rootView.findViewById(R.id.distanceList);
 
-        this.locations = new LocationParser(this.getContext()).readAllItems();
+        List<LocationItem> tmpLocations = new LocationParser(this.getContext()).readAllItems();
+
+        for (LocationItem item : tmpLocations) {
+            if (item.isActive()) {
+                this.locations.add(item);
+            }
+        }
 
         this.adapter = new DistanceListAdapter(this.getActivity(), R.layout.item_distance, this.locations);
         this.distancesView.setAdapter(this.adapter);
