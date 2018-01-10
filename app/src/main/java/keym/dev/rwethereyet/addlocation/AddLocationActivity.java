@@ -188,6 +188,12 @@ public class AddLocationActivity extends BaseActivity {
         super.onResume();
     }
 
+    @Override
+    protected void onDestroy() {
+        this.mapView.onDestroy();
+        super.onDestroy();
+    }
+
     public GoogleMap getMap() {
         return this.map;
     }

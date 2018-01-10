@@ -31,10 +31,12 @@
     <string name="destination_reached">Here we are!</string>
 
     <!-- Preferences. -->
-    <string name="preference_theme_key"
-            translatable="false">Theme</string>
+    <string name="preference_theme_key" translatable="false">Theme</string>
     <string name="preference_theme_title">Theme</string>
     <string name="preference_theme_summary">theme</string>
+    <string name="preference_distances_key" translatable="false">DistancesMap</string>
+    <string name="preference_distances_title">Distances Map</string>
+    <string name="preference_distances_summary">list/map</string>
     <string name="preference_theme_default" translatable="false">Fuscus</string>
     <string name="preference_ringtone_key" translatable="false">Ringtone</string>
     <string name="preference_ringtone_title">Default Ringtone</string>
