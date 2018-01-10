@@ -2,6 +2,7 @@ package keym.dev.rwethereyet.locations;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;

@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -78,9 +79,9 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         item.setActive(b);
 
-                        // Notify activation/disactivation.
+                        // Notify activation/deactivation.
                         if (context instanceof MainActivity) {
-                            ((MainActivity) context).refreshDistances(item, b);
+                            ((MainActivity) context).refreshDistances();
                         }
 
                         // Register the alarm for the location.

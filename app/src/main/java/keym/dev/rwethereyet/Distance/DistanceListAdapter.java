@@ -37,14 +37,6 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
         super(context, layoutResource, data);
         this.layoutResource = layoutResource;
         this.manager = (LocationManager) this.getContext().getSystemService(Context.LOCATION_SERVICE);
-//        try {
-//            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LocationUpdateService.LOCATION_INTERVAL, LocationUpdateService.LOCATION_DISTANCE, this);
-//            Log.d(TAG, "Requested location updates");
-//        } catch (java.lang.SecurityException ex) {
-//            Log.i(TAG, "fail to request location update, ignore", ex);
-//        } catch (IllegalArgumentException ex) {
-//            Log.d(TAG, "gps provider does not exist " + ex.getMessage());
-//        }
     }
 
     @Override
@@ -68,8 +60,6 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
             if (distance != null) {
                 if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                    Location lastLocation = this.manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                    float[] result = new float[1];
 
                     this.listener = new LocationListener() {
                         @Override
@@ -102,21 +92,22 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
                         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LocationUpdateService.LOCATION_INTERVAL, LocationUpdateService.LOCATION_DISTANCE, this.listener);
                         Log.d(TAG, "Requested location updates");
                     } catch (java.lang.SecurityException ex) {
-                        Log.i(TAG, "fail to request location update, ignore", ex);
+                        Log.i(TAG, "Failed to request location update, ignore", ex);
                     } catch (IllegalArgumentException ex) {
-                        Log.d(TAG, "gps provider does not exist " + ex.getMessage());
+                        Log.d(TAG, "GPS provider does not exist " + ex.getMessage());
                     }
 
-
-
-//                    if (lastLocation != null) {
-//                        Location.distanceBetween(item.getLocation().latitude,
-//                                                 item.getLocation().longitude,
-//                                                 lastLocation.getLatitude(),
-//                                                 lastLocation.getLongitude(),
-//                                                 result);
-//                        distance.setText(String.valueOf(result[0]));
-//                    }
+                    // Retrieve the last cached location to avoid the latency for the first location.
+                    float[] result = new float[1];
+                    Location lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (lastLocation != null) {
+                        Location.distanceBetween(item.getLocation().latitude,
+                                                 item.getLocation().longitude,
+                                                 lastLocation.getLatitude(),
+                                                 lastLocation.getLongitude(),
+                                                 result);
+                        distance.setText(String.valueOf(result[0]));
+                    }
                 }
             }
         }

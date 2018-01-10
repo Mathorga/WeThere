@@ -9,7 +9,9 @@ import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.preference.SwitchPreference;
 import android.util.Log;
+import android.widget.Toast;
 
 import keym.dev.rwethereyet.R;
 
@@ -23,6 +25,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     private ListPreference themePreference;
     private RingtonePreference tonePreference;
+    private SwitchPreference mapPreference;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -30,7 +33,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         this.addPreferencesFromResource(R.xml.preferences);
 
         // Register this as listener over SharedPreferences change event.
-        PreferenceManager.getDefaultSharedPreferences(this.getActivity()).registerOnSharedPreferenceChangeListener(this);
+        PreferenceManager.getDefaultSharedPreferences(this.getActivity().getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
 
         // Update preference summary according to the user selection.
         String themeKey = this.getResources().getString(R.string.preference_theme_key);
@@ -46,6 +49,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         this.tonePreference = (RingtonePreference) this.findPreference(toneKey);
         this.tonePreference.setSummary(actualRingtoneTitle);
+
+        String mapKey = this.getResources().getString(R.string.preferences_key);
+        this.mapPreference = (SwitchPreference) this.findPreference(mapKey);
+
     }
 
     @Override
@@ -73,6 +80,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
             this.tonePreference = (RingtonePreference) this.findPreference(toneKey);
             this.tonePreference.setSummary(actualRingtoneTitle);
+        } else if (s.equals(this.getResources().getString(R.string.preference_distances_key))) {
+//            Toast.makeText(this.getActivity(), "distances changed", Toast.LENGTH_SHORT).show();
         }
     }
 }

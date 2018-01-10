@@ -1,15 +1,19 @@
 package keym.dev.rwethereyet;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -17,9 +21,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -44,6 +50,7 @@ import keym.dev.rwethereyet.settings.SettingsActivity;
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
+    private static final int SETTINGS_REQUEST = 0;
 
     private ViewPager pager;
     private FragmentTabAdapter adapter;
@@ -53,6 +60,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
 
@@ -75,7 +83,7 @@ public class MainActivity extends BaseActivity {
                 1);
 
         this.pager = (ViewPager) this.findViewById(R.id.mainPager);
-        this.adapter = new FragmentTabAdapter(this.getSupportFragmentManager());
+        this.adapter = new FragmentTabAdapter(this.getSupportFragmentManager(), this.getApplicationContext(), this);
         this.pager.setAdapter(adapter);
 
         this.tabs = (TabLayout) this.findViewById(R.id.mainTabs);
@@ -89,6 +97,7 @@ public class MainActivity extends BaseActivity {
         this.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "Settings");
                 PopupMenu popup = new PopupMenu(MainActivity.this, menu);
                 popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -98,8 +107,14 @@ public class MainActivity extends BaseActivity {
                             // Settings.
                             case R.id.mainSettings:
                                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                                startActivity(intent);
+                                startActivityForResult(intent, SETTINGS_REQUEST);
                                 return true;
+                            case R.id.minSettings:
+                                Dialog dialog = new Dialog(MainActivity.this);
+                                dialog.setTitle(getString(R.string.settings_activity_name));
+//                                dialog.setCancelable(false);
+                                dialog.setContentView(R.layout.fragment_locations);
+                                dialog.show();
                             // TODO Credits.
                         }
                         return false;
@@ -108,18 +123,40 @@ public class MainActivity extends BaseActivity {
                 popup.show();
             }
         });
-
-        this.startService(new Intent(this, LocationUpdateService.class));
     }
 
-    public void refreshDistances(final LocationItem item, final Boolean b) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+//        refreshDistances();
+//        this.adapter.notifyDataSetChanged();
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Log.d(TAG, "onActivityResult");
+//        if (requestCode == SETTINGS_REQUEST && data != null) {
+//            if (resultCode == RESULT_OK) {
+//                Log.d(TAG, "Result obtained");
+//                Toast.makeText(this, "Result obtained", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
+
+
+    public void refreshDistances() {
         Fragment fragment = this.adapter.getItem(1);
+//        fragment.getFragmentManager()
+//                .beginTransaction()
+//                .detach(fragment)
+//                .attach(fragment)
+//                .commit();
         this.getSupportFragmentManager()
             .beginTransaction()
             .detach(fragment)
             .attach(fragment)
             .commit();
-
     }
 
 //    @Override

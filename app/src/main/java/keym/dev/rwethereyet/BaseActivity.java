@@ -24,6 +24,7 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
         // Set theme.
         String theme = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_THEME, String.valueOf(R.style.Fuscus));
@@ -39,7 +40,6 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
     @Override
     protected void onResume() {
         super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if (s.equals(PREF_THEME)) {
+        if (s.equals(this.getString(R.string.preference_theme_key))) {
             // Update theme.
             String theme = sharedPreferences.getString(s, String.valueOf(R.style.Fuscus));
             if (theme.equals(this.getResources().getString(R.string.theme_fuscus))) {
@@ -58,6 +58,9 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
             } else if (theme.equals(this.getResources().getString(R.string.theme_albus))) {
                 this.setTheme(R.style.Albus);
             }
+            this.recreate();
+        } else if (s.equals(this.getString(R.string.preference_distances_key)) && this instanceof MainActivity) {
+            Log.wtf(TAG, "recreate activity");
             this.recreate();
         }
     }
