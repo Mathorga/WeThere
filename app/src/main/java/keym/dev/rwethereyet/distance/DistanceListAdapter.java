@@ -31,7 +31,6 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
 
     private int layoutResource;
     private LocationManager manager;
-    private LocationListener listener;
 
     public DistanceListAdapter(final Context context, final int layoutResource, List<LocationItem> data) {
         super(context, layoutResource, data);
@@ -61,35 +60,34 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
                 if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-                    this.listener = new LocationListener() {
-                        @Override
-                        public void onLocationChanged(Location location) {
-                            float[] result = new float[1];
-                            Location.distanceBetween(item.getLocation().latitude,
-                                    item.getLocation().longitude,
-                                    location.getLatitude(),
-                                    location.getLongitude(),
-                                    result);
-                            distance.setText(String.valueOf(result[0]) + "m");
-                        }
-
-                        @Override
-                        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-                        }
-
-                        @Override
-                        public void onProviderEnabled(String s) {
-
-                        }
-
-                        @Override
-                        public void onProviderDisabled(String s) {
-
-                        }
-                    };
                     try {
-                        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LocationUpdateService.LOCATION_INTERVAL, LocationUpdateService.LOCATION_DISTANCE, this.listener);
+                        this.manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LocationUpdateService.LOCATION_INTERVAL, LocationUpdateService.LOCATION_DISTANCE, new LocationListener() {
+                            @Override
+                            public void onLocationChanged(Location location) {
+                                float[] result = new float[1];
+                                Location.distanceBetween(item.getLocation().latitude,
+                                        item.getLocation().longitude,
+                                        location.getLatitude(),
+                                        location.getLongitude(),
+                                        result);
+                                distance.setText(String.valueOf(result[0]) + "m");
+                            }
+
+                            @Override
+                            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+                            }
+
+                            @Override
+                            public void onProviderEnabled(String s) {
+
+                            }
+
+                            @Override
+                            public void onProviderDisabled(String s) {
+
+                            }
+                        });
                         Log.d(TAG, "Requested location updates");
                     } catch (java.lang.SecurityException ex) {
                         Log.i(TAG, "Failed to request location update, ignore", ex);
