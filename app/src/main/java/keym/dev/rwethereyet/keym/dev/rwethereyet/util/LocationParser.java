@@ -128,6 +128,8 @@ public class LocationParser {
      * A list of all saved LocationItems, in the order they're saved.
      */
     public List<LocationItem> readAllItems() {
+        Log.wtf(TAG, "readAllItems");
+
         List<LocationItem> items = new ArrayList<>();
 
         try {

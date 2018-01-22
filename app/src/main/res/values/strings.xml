@@ -1,9 +1,7 @@
 <resources>
     <!-- General. -->
-    <string name="google_maps_key"
-            translatable="false">AIzaSyAxFnfrTaPG7VZ6VJLz-CV2pIDe-ti0NPc</string>
-    <string name="app_name"
-            translatable="false">WeThere?</string>
+    <string name="google_maps_key" translatable="false">AIzaSyAxFnfrTaPG7VZ6VJLz-CV2pIDe-ti0NPc</string>
+    <string name="app_name" translatable="false">WeThere?</string>
     <string name="preferences_key" translatable="false">RWTYPreferences</string>
     <string name="no_internet_access">No internet access</string>
     <string name="locations_file_name">locations.json</string>
@@ -23,8 +21,7 @@
     <string name="new_location_search_hint">Address</string>
 
     <!-- SettingsActivity. -->
-    <string name="settings_activity_name"
-            translatable="false">Settings</string>
+    <string name="settings_activity_name" translatable="false">Settings</string>
     <string name="setting_theme">Theme</string>
 
     <!-- NotificationService. -->
@@ -46,5 +43,9 @@
     <!-- Themes. -->
     <string name="theme_fuscus" translatable="false">Fuscus</string>
     <string name="theme_albus" translatable="false">Albus</string>
+
+    <!-- Widget -->
+    <string name="appwidget_text">WeThere</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

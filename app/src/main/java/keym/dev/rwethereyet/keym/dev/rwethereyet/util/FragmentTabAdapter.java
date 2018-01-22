@@ -5,14 +5,13 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import keym.dev.rwethereyet.BaseActivity;
-import keym.dev.rwethereyet.Distance.DistanceListFragment;
-import keym.dev.rwethereyet.Distance.DistanceMapFragment;
+import keym.dev.rwethereyet.distance.DistanceListFragment;
+import keym.dev.rwethereyet.distance.DistanceMapFragment;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.locations.LocationsFragment;
 

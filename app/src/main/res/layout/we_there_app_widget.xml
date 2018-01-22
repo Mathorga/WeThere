@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/albusColorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/fuscusColorAccent">
+        <TextView
+            android:id="@+id/wTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left"
+            android:padding="5dp"
+            android:contentDescription="@string/appwidget_text"
+            android:text="@string/appwidget_text"
+            android:textSize="20sp"
+            android:textColor="@color/fuscusColorText"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/wDistanceList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="3dp"
+        tools:listitem="@layout/item_distance_widget" >
+    </ListView>
+
+</LinearLayout>

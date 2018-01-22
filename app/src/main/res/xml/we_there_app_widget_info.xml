@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialKeyguardLayout="@layout/we_there_app_widget"
+    android:initialLayout="@layout/we_there_app_widget"
+    android:minHeight="110dp"
+    android:minWidth="110dp"
+    android:previewImage="@mipmap/ic_launcher_amber_white"
+    android:updatePeriodMillis="1800000"
+    android:resizeMode="vertical|horizontal"
+    android:widgetCategory="home_screen">
+</appwidget-provider>
