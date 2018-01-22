@@ -1,4 +1,4 @@
-package keym.dev.rwethereyet.Distance;
+package keym.dev.rwethereyet.distance;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -15,14 +15,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import keym.dev.rwethereyet.R;
-import keym.dev.rwethereyet.addlocation.AddLocationActivity;
 import keym.dev.rwethereyet.addlocation.ScrollableMapView;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;

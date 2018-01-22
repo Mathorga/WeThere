@@ -1,8 +1,7 @@
-package keym.dev.rwethereyet.Distance;
+package keym.dev.rwethereyet.distance;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import java.util.List;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
 import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
-import keym.dev.rwethereyet.locations.LocationListAdapter;
 
 /**
  * Created by luka on 17/11/17.

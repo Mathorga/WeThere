@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wDistanceParentView"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/wLocationDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/distance_fragment_name"
+        android:textSize="20sp"
+        android:textColor="@color/albusColorText"/>
+
+    <TextView
+        android:id="@+id/wLocationDistanceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wLocationDistance"
+        android:layout_alignParentEnd="true"
+        android:text="Location"
+        android:textSize="15sp"
+        android:textColor="@color/albusColorHintText"/>
+
+</LinearLayout>

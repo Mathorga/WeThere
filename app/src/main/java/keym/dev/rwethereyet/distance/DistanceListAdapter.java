@@ -1,4 +1,4 @@
-package keym.dev.rwethereyet.Distance;
+package keym.dev.rwethereyet.distance;
 
 import android.Manifest;
 import android.content.Context;
@@ -113,22 +113,4 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
         }
         return view;
     }
-
-//    @Override
-//    public void onLocationChanged(Location location) {
-//
-//    }
-//
-//    @Override
-//    public void onStatusChanged(String s, int i, Bundle bundle) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderEnabled(String s) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderDisabled(String s) {
 }
