@@ -1,6 +1,7 @@
 package keym.dev.rwethereyet.settings;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -47,5 +48,10 @@ public class SettingsActivity extends BaseActivity {
     public boolean onSupportNavigateUp() {
         this.onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        this.finish();
     }
 }

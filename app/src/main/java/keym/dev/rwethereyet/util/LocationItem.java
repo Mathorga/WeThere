@@ -1,6 +1,6 @@
-package keym.dev.rwethereyet.keym.dev.rwethereyet.util;
+package keym.dev.rwethereyet.util;
 
-import android.media.Ringtone;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -20,14 +20,14 @@ public class LocationItem implements Parcelable {
     private String label;
     private Integer radius;
     private LatLng location;
-    private Ringtone tone;
+    private Uri tone;
     private Boolean active;
 
     public LocationItem(final Integer id,
                         final String label,
                         final Integer radius,
                         final LatLng location,
-                        final Ringtone tone) {
+                        final Uri tone) {
         new LocationItem(id, label, radius, location, tone, false);
     }
 
@@ -35,7 +35,7 @@ public class LocationItem implements Parcelable {
                         final String label,
                         final Integer radius,
                         final LatLng location,
-                        final Ringtone tone,
+                        final Uri tone,
                         final Boolean active) {
         this.id = id;
         this.label = label;
@@ -57,8 +57,7 @@ public class LocationItem implements Parcelable {
         String lng = parcel.readString();
         this.location = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         // Read ringtone.
-        this.tone = null;
-        parcel.readString();
+        this.tone = Uri.parse(parcel.readString());
         // Read whether it's active or not.
         this.active = parcel.readByte() != 0;
     }
@@ -95,6 +94,14 @@ public class LocationItem implements Parcelable {
         this.location = location;
     }
 
+    public Uri getTone() {
+        return this.tone;
+    }
+
+    public void setTone(final Uri tone) {
+        this.tone = tone;
+    }
+
     public boolean isActive() {
         return this.active;
     }
@@ -120,7 +127,7 @@ public class LocationItem implements Parcelable {
         parcel.writeString(String.valueOf(this.location.latitude));
         parcel.writeString(String.valueOf(this.location.longitude));
         // Write ringtone.
-        //parcel.writeString(this.tone.toString());
+        parcel.writeString(this.tone.toString());
         // Write whether it's active or not.
         parcel.writeByte((byte) (this.active ? 1 : 0));
     }

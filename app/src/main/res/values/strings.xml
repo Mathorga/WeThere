@@ -17,6 +17,7 @@
     <string name="new_location_label">Label:</string>
     <string name="new_location_label_hint">Washington</string>
     <string name="new_location_radius">Radius:</string>
+    <string name="new_location_ringtone">Ringtone:</string>
     <string name="new_location_coords">Position:</string>
     <string name="new_location_search_hint">Address</string>
 

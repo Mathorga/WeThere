@@ -3,20 +3,18 @@ package keym.dev.rwethereyet.background;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import keym.dev.rwethereyet.MainActivity;
 import keym.dev.rwethereyet.R;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.ParcelableUtil;
 
 /**
  * Created by luka on 27/06/17.
@@ -38,7 +36,10 @@ public class NotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(final Intent intent) {
-        LocationItem location = intent.getParcelableExtra("location");
+        LocationItem location = ParcelableUtil.unmarshall(intent.getByteArrayExtra("location"), LocationItem.CREATOR);
+
+        Log.wtf(TAG, intent.getExtras().toString());
+
         boolean entering = intent.getBooleanExtra(LocationManager.KEY_PROXIMITY_ENTERING, false);
 
         Intent openAppIntent = new Intent(this, MainActivity.class);
@@ -47,7 +48,7 @@ public class NotificationService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                                              .setSmallIcon(R.drawable.ic_stat_external)
                                              .setContentTitle(this.getResources().getString(R.string.destination_reached))
-//                                             .setContentText(location.getLabel())
+                                             .setContentText(location.getLabel())
                                              .setContentIntent(PendingIntent.getActivity(this, BACK_TO_MAIN_REQUEST, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
         // Set an ID for the notification.

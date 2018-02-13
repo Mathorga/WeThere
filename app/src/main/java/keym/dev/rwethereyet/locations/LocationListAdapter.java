@@ -18,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -29,8 +28,9 @@ import java.util.List;
 import keym.dev.rwethereyet.MainActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.background.NotificationService;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
+import keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.LocationParser;
+import keym.dev.rwethereyet.util.ParcelableUtil;
 
 /**
  * Created by Luka on 09/05/2017.
@@ -76,8 +76,8 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
             if (active != null) {
                 active.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        item.setActive(b);
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean active) {
+                        item.setActive(active);
 
                         // Notify activation/deactivation.
                         if (context instanceof MainActivity) {
@@ -88,20 +88,22 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
                         LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
                         int permission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
                         if (permission == PackageManager.PERMISSION_GRANTED) {
-                            Intent alarmIntent = new Intent(getContext(), NotificationService.class);
-                            alarmIntent.putExtra("location", item);
-                            Log.d(TAG, "Put LocationItem extra");
-                            PendingIntent pendingAlarm = PendingIntent.getService(getContext(),
-                                                                                  LocationsFragment.ALARM_REQUEST,
-                                                                                  alarmIntent,
-                                                                                  PendingIntent.FLAG_UPDATE_CURRENT);
-                            if (item.isActive()) {
+                            if (active) {
+                                Intent proximityIntent = new Intent(getContext(), NotificationService.class);
+                                proximityIntent.putExtra("location", ParcelableUtil.marshall(item));
+
+                                PendingIntent pendingAlarm = PendingIntent.getService(getContext(),
+                                                                                      LocationsFragment.ALARM_REQUEST,
+                                                                                      proximityIntent,
+                                                                                      PendingIntent.FLAG_UPDATE_CURRENT);
+
                                 // Set alarm.
                                 manager.addProximityAlert(item.getLocation().latitude,
                                                           item.getLocation().longitude,
                                                           item.getRadius() * LocationItem.M_TO_KM,
                                                           -1,
                                                           pendingAlarm);
+
                                 Log.d(TAG, "Set proximity alert for " + item.getLabel());
                                 manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
                                     @Override
@@ -124,9 +126,6 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
 
                                     }
                                 });
-                            } else {
-                                // Remove alarm.
-                                manager.removeProximityAlert(pendingAlarm);
                             }
                         }
 

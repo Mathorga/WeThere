@@ -13,12 +13,13 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.background.LocationUpdateService;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
+import keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.LocationParser;
 
 /**
  * Created by luka on 14/01/18.
@@ -27,8 +28,14 @@ import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
 public class WeThereRemoteViewService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        List<LocationItem> items = new ArrayList<>();
+        for (LocationItem item : new LocationParser(this.getApplicationContext()).readAllItems()) {
+            if (item.isActive()) {
+                items.add(item);
+            }
+        }
         return new WeThereRemoteViewsFactory(this.getApplicationContext(),
-                                             new LocationParser(this.getApplicationContext()).readAllItems());
+                                             items);
     }
 }
 
@@ -119,7 +126,7 @@ class WeThereRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
                         lastLocation.getLatitude(),
                         lastLocation.getLongitude(),
                         result);
-                views.setTextViewText(R.id.wLocationDistance, String.valueOf(result[0]));
+                views.setTextViewText(R.id.wLocationDistance, String.valueOf((int) (result[0] / 1000)) + " km");
             }
         }
 

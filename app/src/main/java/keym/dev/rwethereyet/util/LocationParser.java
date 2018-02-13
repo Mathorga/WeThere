@@ -1,6 +1,7 @@
-package keym.dev.rwethereyet.keym.dev.rwethereyet.util;
+package keym.dev.rwethereyet.util;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -16,7 +17,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -68,7 +68,7 @@ public class LocationParser {
             newObject.put(RADIUS_KEY, item.getRadius());
             newObject.put(LATITUDE_KEY, item.getLocation().latitude);
             newObject.put(LONGITUDE_KEY, item.getLocation().longitude);
-            // TODO Put ringtone.
+            newObject.put(RINGTONE_KEY, item.getTone().toString());
             newObject.put(ACTIVE_KEY, item.isActive());
 
             // Add the new object to the file content.
@@ -144,7 +144,7 @@ public class LocationParser {
                                            item.getString(LABEL_KEY),
                                            item.getInt(RADIUS_KEY),
                                            new LatLng(item.getDouble(LATITUDE_KEY), item.getDouble(LONGITUDE_KEY)),
-                                           null,
+                                           Uri.parse(item.getString(RINGTONE_KEY)),
                                            item.getBoolean(ACTIVE_KEY)));
             }
         } catch (JSONException exception) {
@@ -184,7 +184,7 @@ public class LocationParser {
                 newObject.put(RADIUS_KEY, item.getRadius());
                 newObject.put(LATITUDE_KEY, item.getLocation().latitude);
                 newObject.put(LONGITUDE_KEY, item.getLocation().longitude);
-                // TODO Put ringtone.
+                newObject.put(RINGTONE_KEY, item.getTone().toString());
                 newObject.put(ACTIVE_KEY, item.isActive());
 
                 // Add the new object to the file content.
@@ -217,7 +217,7 @@ public class LocationParser {
             newObject.put(RADIUS_KEY, item.getRadius());
             newObject.put(LATITUDE_KEY, item.getLocation().latitude);
             newObject.put(LONGITUDE_KEY, item.getLocation().longitude);
-            // TODO Put ringtone.
+            newObject.put(RINGTONE_KEY, item.getTone().toString());
             newObject.put(ACTIVE_KEY, item.isActive());
 
             // Add the new object to the file content.
