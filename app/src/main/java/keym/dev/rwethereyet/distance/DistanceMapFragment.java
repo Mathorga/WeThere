@@ -21,8 +21,8 @@ import java.util.List;
 
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.addlocation.ScrollableMapView;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
+import keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.LocationParser;
 
 /**
  * Created by luka on 17/11/17.

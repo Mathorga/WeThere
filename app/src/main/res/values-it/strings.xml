@@ -5,6 +5,7 @@
     <string name="locations_fragment_name">Location</string>
     <string name="main_menu_settings">Impostazioni</string>
     <string name="new_location_coords">Posizione:</string>
+    <string name="new_location_ringtone">Suoneria:</string>
     <string name="new_location_label">Etichetta:</string>
     <string name="new_location_label_hint">Roma</string>
     <string name="new_location_radius">Raggio</string>

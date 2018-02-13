@@ -1,5 +1,6 @@
 package keym.dev.rwethereyet;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -58,10 +59,22 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
             } else if (theme.equals(this.getResources().getString(R.string.theme_albus))) {
                 this.setTheme(R.style.Albus);
             }
-            this.recreate();
-        } else if (s.equals(this.getString(R.string.preference_distances_key)) && this instanceof MainActivity) {
+//            this.recreate();
+            this.restart();
+        } else if (s.equals(this.getString(R.string.preference_distances_key)) /*&& this instanceof MainActivity*/) {
             Log.wtf(TAG, "recreate activity");
-            this.recreate();
+//            this.recreate();
+            this.restart();
+
         }
+    }
+
+    protected void restart() {
+        Intent intent = this.getIntent();
+        this.overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        this.finish();
+        this.overridePendingTransition(0, 0);
+        this.startActivity(intent);
     }
 }

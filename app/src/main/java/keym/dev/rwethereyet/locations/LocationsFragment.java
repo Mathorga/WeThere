@@ -2,7 +2,6 @@ package keym.dev.rwethereyet.locations;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,9 +22,8 @@ import java.util.List;
 
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.addlocation.AddLocationActivity;
-import keym.dev.rwethereyet.background.NotificationService;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.LocationParser;
+import keym.dev.rwethereyet.util.LocationItem;
 
 import static android.app.Activity.RESULT_OK;
 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/new_location_label"
+        android:inputType="textCapWords"
+        android:textSize="34sp" />
+
+    <EditText
+        android:id="@+id/newLocationLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:hint="@string/new_location_label_hint"
+        android:inputType="textCapWords"
+        android:textSize="34sp"
+        android:imeOptions="actionDone"/>
+
+    <TextView
+        android:id="@+id/newLocationRadius"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:inputType="textCapWords"
+        android:textSize="20sp"
+        android:text="0 km"/>
+    <SeekBar
+        android:id="@+id/alterRadius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"/>
+
+</LinearLayout>

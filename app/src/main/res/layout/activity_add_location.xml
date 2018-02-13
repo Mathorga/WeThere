@@ -70,15 +70,33 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp" />
 
+            <LinearLayout
+                android:id="@+id/newLocationRingtoneSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_location_ringtone"
+                    android:textSize="34sp" />
+
+                <TextView
+                    android:id="@+id/newLocationRingtone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Default"
+                    android:textColor="?RWTYTextHintColor"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:text="@string/new_location_coords"
-                android:inputType="textCapWords"
                 android:textSize="34sp" />
 
             <EditText

@@ -1,20 +1,10 @@
 package keym.dev.rwethereyet;
 
 import android.Manifest;
-import android.app.Dialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.PersistableBundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -25,26 +15,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-
-import keym.dev.rwethereyet.background.LocationUpdateService;
-import keym.dev.rwethereyet.background.NotificationService;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.FragmentTabAdapter;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.FragmentTabAdapter;
+import keym.dev.rwethereyet.util.LocationItem;
 import keym.dev.rwethereyet.settings.SettingsActivity;
 
 public class MainActivity extends BaseActivity {
@@ -56,7 +29,6 @@ public class MainActivity extends BaseActivity {
     private FragmentTabAdapter adapter;
     private TabLayout tabs;
     private ImageButton menu;
-//    private FusedLocationProviderClient fusedClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +40,14 @@ public class MainActivity extends BaseActivity {
         if (starter != null) {
             LocationItem location = starter.getParcelableExtra("location");
 
-            // Stop alarm.
-            Uri alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            Ringtone ringtone = RingtoneManager.getRingtone(this.getApplicationContext(), alarm);
-            ringtone.stop();
+            if (location != null) {
+                // Stop alarm.
+                Uri alarm = location.getTone();
+                Ringtone ringtone = RingtoneManager.getRingtone(this.getApplicationContext(), alarm);
+                ringtone.stop();
+
+                Log.wtf(TAG, "Stopped Alarm!!");
+            }
         }
 
         // Ask for locations permissions.
@@ -109,12 +85,6 @@ public class MainActivity extends BaseActivity {
                                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                                 startActivityForResult(intent, SETTINGS_REQUEST);
                                 return true;
-                            case R.id.minSettings:
-                                Dialog dialog = new Dialog(MainActivity.this);
-                                dialog.setTitle(getString(R.string.settings_activity_name));
-//                                dialog.setCancelable(false);
-                                dialog.setContentView(R.layout.fragment_locations);
-                                dialog.show();
                             // TODO Credits.
                         }
                         return false;
@@ -129,90 +99,15 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-//        refreshDistances();
-//        this.adapter.notifyDataSetChanged();
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.d(TAG, "onActivityResult");
-//        if (requestCode == SETTINGS_REQUEST && data != null) {
-//            if (resultCode == RESULT_OK) {
-//                Log.d(TAG, "Result obtained");
-//                Toast.makeText(this, "Result obtained", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 
 
     public void refreshDistances() {
         Fragment fragment = this.adapter.getItem(1);
-//        fragment.getFragmentManager()
-//                .beginTransaction()
-//                .detach(fragment)
-//                .attach(fragment)
-//                .commit();
         this.getSupportFragmentManager()
             .beginTransaction()
             .detach(fragment)
             .attach(fragment)
             .commit();
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        final LocationRequest locationRequest = new LocationRequest();
-//        locationRequest.setInterval(LOCATION_INTERVAL);
-//        locationRequest.setFastestInterval(LOCATION_FASTEST_INTERVAL);
-//        locationRequest.setPriority(locationRequest.PRIORITY_HIGH_ACCURACY);
-//
-//        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-//
-//        SettingsClient client = LocationServices.getSettingsClient(this);
-//        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
-//        fusedClient = new FusedLocationProviderClient(this);
-//
-//        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-//            @Override
-//            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-//                // All location settings are satisfied. The client can initialize
-//                // location requests here.
-//                // ...
-//                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-//                    ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                    return;
-//                }
-//                fusedClient.requestLocationUpdates(locationRequest,
-//                        mLocationCallback,
-//                        null /* Looper */);
-//            }
-//        });
-//
-//        task.addOnFailureListener(this, new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                int statusCode = ((ApiException) e).getStatusCode();
-//                switch (statusCode) {
-//                    case CommonStatusCodes.RESOLUTION_REQUIRED:
-//                        // Location settings are not satisfied, but this can be fixed
-//                        // by showing the user a dialog.
-////                        try {
-////                            // Show the dialog by calling startResolutionForResult(),
-////                            // and check the result in onActivityResult().
-////                            ResolvableApiException resolvable = (ResolvableApiException) e;
-////                            resolvable.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
-////                        } catch (IntentSender.SendIntentException sendEx) {
-////                            // Ignore the error.
-////                        }
-//                        break;
-//                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-//                        // Location settings are not satisfied. However, we have no way
-//                        // to fix the settings so we won't show the dialog.
-//                        break;
-//                }
-//            }
-//        });
-//
-//    }
 }

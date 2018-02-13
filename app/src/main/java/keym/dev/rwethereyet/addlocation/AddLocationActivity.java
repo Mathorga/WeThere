@@ -4,8 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -16,10 +18,10 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,9 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import keym.dev.rwethereyet.BaseActivity;
 import keym.dev.rwethereyet.R;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationParser;
-import keym.dev.rwethereyet.settings.SettingsActivity;
+import keym.dev.rwethereyet.util.LocationItem;
 
 /**
  * Created by luka on 11/05/17.
@@ -41,6 +41,7 @@ public class AddLocationActivity extends BaseActivity {
 
     private static final String TAG = "AddLocationActivity";
     private static final int ZOOM = 16;
+    private static final int TONE_PICKER = 1;
 
     private LocationItem locationItem;
 
@@ -48,6 +49,7 @@ public class AddLocationActivity extends BaseActivity {
     private EditText label;
     private TextView radius;
     private SeekBar radiusBar;
+    private LinearLayout ringtoneItem;
     private EditText searchPosition;
     private ScrollableMapView mapView;
     private FloatingActionButton done;
@@ -115,6 +117,32 @@ public class AddLocationActivity extends BaseActivity {
             }
         });
 
+
+
+
+        final TextView ringtoneName = (TextView) this.findViewById(R.id.newLocationRingtone);
+        final String ringtonePreferenceKey = this.getResources().getString(R.string.preference_ringtone_key);
+        final Uri defaultRingtoneUri = Uri.parse(PreferenceManager.getDefaultSharedPreferences(this).getString(ringtonePreferenceKey, "DEF"));
+        final Ringtone defaultRingtone = RingtoneManager.getRingtone(this, defaultRingtoneUri);
+        ringtoneName.setText(defaultRingtone.getTitle(this));
+
+        this.ringtoneItem = (LinearLayout) this.findViewById(R.id.newLocationRingtoneSelector);
+        this.ringtoneItem.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, defaultRingtoneUri);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+                startActivityForResult(intent, TONE_PICKER);
+//                startActivity(intent);
+            }
+        });
+
+
+
+
         this.searchPosition = (EditText) findViewById(R.id.searchPosition);
         this.searchPosition.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -174,7 +202,6 @@ public class AddLocationActivity extends BaseActivity {
             public void onClick(View view) {
                 Log.d(TAG, locationItem.toString());
                 Intent returnIntent = new Intent();
-
                 returnIntent.putExtra("result", locationItem);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
@@ -205,5 +232,14 @@ public class AddLocationActivity extends BaseActivity {
     public void moveMapTo(final LatLng position) {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, ZOOM);
         map.animateCamera(cameraUpdate);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == TONE_PICKER && resultCode == RESULT_OK) {
+            Uri selectedUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            this.locationItem.setTone(selectedUri);
+        }
     }
 }

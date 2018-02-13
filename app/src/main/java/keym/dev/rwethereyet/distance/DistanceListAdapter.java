@@ -19,7 +19,7 @@ import java.util.List;
 
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.background.LocationUpdateService;
-import keym.dev.rwethereyet.keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.LocationItem;
 
 /**
  * Created by luka on 18/11/17.
