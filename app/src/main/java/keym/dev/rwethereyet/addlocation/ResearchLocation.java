@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 import java.util.Locale;
@@ -57,6 +58,9 @@ public class ResearchLocation extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(final Boolean result) {
         if (result) {
             this.caller.moveMapTo(this.position);
+            this.caller.getMap().addMarker(new MarkerOptions().position(this.position)
+                                                              .draggable(false)
+                                                              .visible(true));
             this.caller.getLocationItem().setLocation(this.position);
         } else {
             Toast.makeText(this.caller, "No match found", Toast.LENGTH_SHORT).show();

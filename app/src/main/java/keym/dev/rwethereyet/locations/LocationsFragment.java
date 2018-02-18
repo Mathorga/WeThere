@@ -24,6 +24,7 @@ import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.addlocation.AddLocationActivity;
 import keym.dev.rwethereyet.util.LocationParser;
 import keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.ParcelableUtil;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -38,7 +39,8 @@ public class LocationsFragment extends Fragment {
     public static final String STATE_ARGUMENT = "state";
 
     public static final int NEW_LOCATION_REQUEST = 1;
-    public static final int ALARM_REQUEST = 2;
+    public static final int UPDATE_LOCATION_REQUEST = 2;
+    public static final int ALARM_REQUEST = 3;
 
     private View rootView;
     private List<LocationItem> locations;
@@ -127,8 +129,8 @@ public class LocationsFragment extends Fragment {
 
                 // ---------------------------------------------------------------------------------
                 // Test item deletion.
-                adapter.remove(locations.get(i));
-                new LocationParser(getContext()).deleteItem(i);
+//                adapter.remove(locations.get(i));
+//                new LocationParser(getContext()).deleteItem(i);
                 // ---------------------------------------------------------------------------------
 
                 // ---------------------------------------------------------------------------------
@@ -137,6 +139,15 @@ public class LocationsFragment extends Fragment {
 //                notificationIntent.putExtra("location", locations.get(i));
 //                notificationIntent.putExtra(LocationManager.KEY_PROXIMITY_ENTERING, true);
 //                getActivity().startService(notificationIntent);
+                // ---------------------------------------------------------------------------------
+
+                // ---------------------------------------------------------------------------------
+                // Test item modification.
+                if (checkInternetAccess()) {
+                    Intent addLocationIntent = new Intent(getActivity(), AddLocationActivity.class);
+                    addLocationIntent.putExtra("location", ParcelableUtil.marshall(locations.get(i)));
+                    startActivityForResult(addLocationIntent, UPDATE_LOCATION_REQUEST);
+                }
                 // ---------------------------------------------------------------------------------
                 return true;
             }
@@ -159,11 +170,12 @@ public class LocationsFragment extends Fragment {
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (requestCode == NEW_LOCATION_REQUEST) {
+            Log.wtf(TAG, "NEW RESULT");
             if (resultCode == RESULT_OK) {
                 if (data == null) {
                     Log.d(TAG, "Intent is NULL");
                 } else {
-                    LocationItem item = data.getParcelableExtra("result");
+                    LocationItem item = ParcelableUtil.unmarshall(data.getByteArrayExtra("result"), LocationItem.CREATOR);
 
                     if (item.getId().equals(LocationItem.ID_UNDEFINED)) {
                         Log.d(TAG, "Id set to " + new LocationParser(this.getContext()).getNextIndex());
@@ -175,6 +187,34 @@ public class LocationsFragment extends Fragment {
                     } catch(JSONException exception) {
                         exception.printStackTrace();
                     }
+
+                    this.locations.add(item);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        } else if (requestCode == UPDATE_LOCATION_REQUEST) {
+            Log.wtf(TAG, "UPDATE RESULT");
+            if (resultCode == RESULT_OK) {
+                if (data == null) {
+                    Log.d(TAG, "Intent is NULL");
+                } else {
+                    LocationItem item = ParcelableUtil.unmarshall(data.getByteArrayExtra("result"), LocationItem.CREATOR);
+
+                    if (item.getId().equals(LocationItem.ID_UNDEFINED)) {
+                        Log.d(TAG, "Id set to " + new LocationParser(this.getContext()).getNextIndex());
+                        item.setId(new LocationParser(this.getContext()).getNextIndex());
+                    }
+                    // Write new location on file.
+                    try {
+                        new LocationParser(this.getContext()).writeItem(item);
+                    } catch(JSONException exception) {
+                        exception.printStackTrace();
+                    }
+
+                    int removeId = data.getIntExtra("removeId", 0);
+                    Log.wtf(TAG, "RemoveId received: " + removeId);
+                    this.adapter.remove(this.locations.get(removeId));
+                    new LocationParser(this.getContext()).deleteItem(removeId);
 
                     this.locations.add(item);
                     adapter.notifyDataSetChanged();
