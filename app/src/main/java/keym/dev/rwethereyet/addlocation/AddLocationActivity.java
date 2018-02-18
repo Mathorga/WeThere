@@ -28,10 +28,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import keym.dev.rwethereyet.BaseActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.util.LocationItem;
+import keym.dev.rwethereyet.util.LocationParser;
+import keym.dev.rwethereyet.util.ParcelableUtil;
 
 /**
  * Created by luka on 11/05/17.
@@ -45,11 +48,14 @@ public class AddLocationActivity extends BaseActivity {
 
     private LocationItem locationItem;
 
+    private LatLng coords;
+
     private ScrollView scroll;
     private EditText label;
     private TextView radius;
     private SeekBar radiusBar;
     private LinearLayout ringtoneItem;
+    private TextView ringtoneName;
     private EditText searchPosition;
     private ScrollableMapView mapView;
     private FloatingActionButton done;
@@ -61,9 +67,18 @@ public class AddLocationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_add_location);
 
-        this.scroll = (ScrollView) this.findViewById(R.id.addLocationScroll);
+        this.coords = new LatLng(43.90921, 12.91640);
 
+        this.scroll = (ScrollView) this.findViewById(R.id.addLocationScroll);
         this.label = (EditText) this.findViewById(R.id.newLocationLabel);
+        this.radius = (TextView) this.findViewById(R.id.newLocationRadius);
+        this.ringtoneName = (TextView) this.findViewById(R.id.newLocationRingtone);
+        this.ringtoneItem = (LinearLayout) this.findViewById(R.id.newLocationRingtoneSelector);
+        this.searchPosition = (EditText) findViewById(R.id.searchPosition);
+        this.mapView = (ScrollableMapView) this.findViewById(R.id.newLocationMap);
+        this.done = (FloatingActionButton) this.findViewById(R.id.newLocationDone);
+
+
         this.label.clearFocus();
         this.label.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -92,7 +107,6 @@ public class AddLocationActivity extends BaseActivity {
             }
         });
 
-        this.radius = (TextView) this.findViewById(R.id.newLocationRadius);
 
         this.radiusBar = (SeekBar) this.findViewById(R.id.newLocationRadiusBar);
         this.radiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -120,19 +134,32 @@ public class AddLocationActivity extends BaseActivity {
 
 
 
-        final TextView ringtoneName = (TextView) this.findViewById(R.id.newLocationRingtone);
         final String ringtonePreferenceKey = this.getResources().getString(R.string.preference_ringtone_key);
         final Uri defaultRingtoneUri = Uri.parse(PreferenceManager.getDefaultSharedPreferences(this).getString(ringtonePreferenceKey, "DEF"));
-        final Ringtone defaultRingtone = RingtoneManager.getRingtone(this, defaultRingtoneUri);
-        ringtoneName.setText(defaultRingtone.getTitle(this));
 
-        this.ringtoneItem = (LinearLayout) this.findViewById(R.id.newLocationRingtoneSelector);
+        Uri ringtoneUri;
+        if (!defaultRingtoneUri.equals(Uri.parse("DEF"))) {
+            Log.wtf(TAG, "Default ringtone URI: " + defaultRingtoneUri);
+            ringtoneUri = defaultRingtoneUri;
+        } else {
+            ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        }
+        Ringtone defaultRingtone = RingtoneManager.getRingtone(this, ringtoneUri);
+        this.ringtoneName.setText(defaultRingtone.getTitle(this));
+
         this.ringtoneItem.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                Uri ringtoneUri;
+                if (!defaultRingtoneUri.equals((Uri.parse("DEF")))) {
+                    ringtoneUri = defaultRingtoneUri;
+                } else {
+                    ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                }
+
                 Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, defaultRingtoneUri);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, ringtoneUri);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
                 startActivityForResult(intent, TONE_PICKER);
@@ -143,7 +170,6 @@ public class AddLocationActivity extends BaseActivity {
 
 
 
-        this.searchPosition = (EditText) findViewById(R.id.searchPosition);
         this.searchPosition.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH ||
@@ -167,7 +193,38 @@ public class AddLocationActivity extends BaseActivity {
             }
         });
 
-        this.mapView = (ScrollableMapView) this.findViewById(R.id.newLocationMap);
+
+        final byte[] bytes = getIntent().getByteArrayExtra("location");
+        if (bytes != null) {
+            this.locationItem = ParcelableUtil.unmarshall(bytes, LocationItem.CREATOR);
+            this.label.setText(this.locationItem.getLabel());
+            this.radiusBar.setProgress(this.locationItem.getRadius());
+            this.ringtoneName.setText(new RingtoneManager(this).getRingtone(this, this.locationItem.getTone()).getTitle(this));
+            this.coords = this.locationItem.getLocation();
+            Log.wtf(TAG, this.locationItem.toString());
+        } else {
+            this.locationItem = new LocationItem(LocationItem.ID_UNDEFINED,
+                    this.label.getText().toString(),
+                    this.radiusBar.getProgress(),
+                    new LatLng(0.0, 0.0),
+                    null,
+                    false);
+        }
+
+        this.done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, locationItem.toString());
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result", ParcelableUtil.marshall(locationItem));
+                if (bytes != null) {
+                    returnIntent.putExtra("removeId", (int) ParcelableUtil.unmarshall(bytes, LocationItem.CREATOR).getId());
+                }
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+        });
+
         this.mapView.onCreate(savedInstanceState);
         if (this.mapView != null) {
             this.mapView.getMapAsync(new OnMapReadyCallback() {
@@ -176,37 +233,31 @@ public class AddLocationActivity extends BaseActivity {
                     map = googleMap;
                     if (ActivityCompat.checkSelfPermission(AddLocationActivity.this,
                             Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(AddLocationActivity.this,
-                            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.checkSelfPermission(AddLocationActivity.this,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         map.setMyLocationEnabled(true);
                         map.getUiSettings().setMyLocationButtonEnabled(true);
                     }
                     map.getUiSettings().setZoomControlsEnabled(true);
-                    LatLng position = new LatLng(43.90921, 12.91640);
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, ZOOM);
+                    map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                            locationItem.setLocation(latLng);
+                            map.clear();
+                            map.addMarker(new MarkerOptions().position(latLng)
+                                                             .draggable(false)
+                                                             .visible(true));
+                        }
+                    });
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coords, ZOOM);
+                    map.clear();
+                    map.addMarker(new MarkerOptions().position(coords)
+                                                     .draggable(false)
+                                                     .visible(true));
                     map.animateCamera(cameraUpdate);
                 }
             });
         }
-
-        this.locationItem = new LocationItem(LocationItem.ID_UNDEFINED,
-                                             this.label.getText().toString(),
-                                             this.radiusBar.getProgress(),
-                                             new LatLng(0.0, 0.0),
-                                             null,
-                                             false);
-
-        this.done = (FloatingActionButton) this.findViewById(R.id.newLocationDone);
-        this.done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, locationItem.toString());
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("result", locationItem);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            }
-        });
     }
 
     @Override
@@ -240,6 +291,7 @@ public class AddLocationActivity extends BaseActivity {
         if (requestCode == TONE_PICKER && resultCode == RESULT_OK) {
             Uri selectedUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             this.locationItem.setTone(selectedUri);
+            this.ringtoneName.setText(RingtoneManager.getRingtone(this, selectedUri).getTitle(this));
         }
     }
 }

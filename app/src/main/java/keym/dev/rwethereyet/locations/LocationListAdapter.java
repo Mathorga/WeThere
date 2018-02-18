@@ -88,14 +88,14 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
                         LocationManager manager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
                         int permission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
                         if (permission == PackageManager.PERMISSION_GRANTED) {
-                            if (active) {
-                                Intent proximityIntent = new Intent(getContext(), NotificationService.class);
-                                proximityIntent.putExtra("location", ParcelableUtil.marshall(item));
+                            Intent proximityIntent = new Intent(getContext(), NotificationService.class);
+                            proximityIntent.putExtra("location", ParcelableUtil.marshall(item));
 
-                                PendingIntent pendingAlarm = PendingIntent.getService(getContext(),
-                                                                                      LocationsFragment.ALARM_REQUEST,
-                                                                                      proximityIntent,
-                                                                                      PendingIntent.FLAG_UPDATE_CURRENT);
+                            PendingIntent pendingAlarm = PendingIntent.getService(getContext(),
+                                    LocationsFragment.ALARM_REQUEST,
+                                    proximityIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT);
+                            if (active) {
 
                                 // Set alarm.
                                 manager.addProximityAlert(item.getLocation().latitude,
@@ -104,7 +104,7 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
                                                           -1,
                                                           pendingAlarm);
 
-                                Log.d(TAG, "Set proximity alert for " + item.getLabel());
+                                Log.wtf(TAG, "Set proximity alert for " + item.getLabel());
                                 manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
                                     @Override
                                     public void onLocationChanged(Location location) {
