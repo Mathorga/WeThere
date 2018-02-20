@@ -97,6 +97,7 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
                                     PendingIntent.FLAG_UPDATE_CURRENT);
                             if (active) {
 
+
                                 // Set alarm.
                                 manager.addProximityAlert(item.getLocation().latitude,
                                                           item.getLocation().longitude,
@@ -126,6 +127,8 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
 
                                     }
                                 });
+                            } else {
+                                manager.removeProximityAlert(pendingAlarm);
                             }
                         }
 
