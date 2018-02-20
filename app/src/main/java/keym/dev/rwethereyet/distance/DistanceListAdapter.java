@@ -70,7 +70,7 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
                                         location.getLatitude(),
                                         location.getLongitude(),
                                         result);
-                                distance.setText(String.valueOf(result[0]) + "m");
+                                distance.setText(String.valueOf(result[0]) + " m");
                             }
 
                             @Override
@@ -104,7 +104,7 @@ class DistanceListAdapter extends ArrayAdapter<LocationItem> {
                                                  lastLocation.getLatitude(),
                                                  lastLocation.getLongitude(),
                                                  result);
-                        distance.setText(String.valueOf(result[0]));
+                        distance.setText(String.valueOf(result[0]) + " m");
                     }
                 }
             }

@@ -20,6 +20,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import keym.dev.rwethereyet.MainActivity;
 import keym.dev.rwethereyet.R;
 import keym.dev.rwethereyet.addlocation.AddLocationActivity;
 import keym.dev.rwethereyet.util.LocationParser;
@@ -114,23 +115,35 @@ public class LocationsFragment extends Fragment {
         this.locationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(view.getContext().getApplicationContext(),
-                        locations.get(position).getLabel(),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext().getApplicationContext(),
+//                        locations.get(position).getLabel(),
+//                        Toast.LENGTH_SHORT).show();
+
+                // ---------------------------------------------------------------------------------
+                // Test item modification.
+                if (checkInternetAccess()) {
+                    Intent addLocationIntent = new Intent(getActivity(), AddLocationActivity.class);
+                    addLocationIntent.putExtra("location", ParcelableUtil.marshall(locations.get(position)));
+                    startActivityForResult(addLocationIntent, UPDATE_LOCATION_REQUEST);
+                }
+                // ---------------------------------------------------------------------------------
             }
         });
 
         this.locationsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(view.getContext().getApplicationContext(),
-                               locations.get(i).getLocation().latitude + ", " + locations.get(i).getLocation().longitude,
-                               Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext().getApplicationContext(),
+//                               locations.get(i).getLocation().latitude + ", " + locations.get(i).getLocation().longitude,
+//                               Toast.LENGTH_SHORT).show();
 
                 // ---------------------------------------------------------------------------------
                 // Test item deletion.
-//                adapter.remove(locations.get(i));
-//                new LocationParser(getContext()).deleteItem(i);
+                Toast.makeText(getContext().getApplicationContext(),
+                               "Deleted " + locations.get(i).getLabel(),
+                               Toast.LENGTH_SHORT).show();
+                adapter.remove(locations.get(i));
+                new LocationParser(getContext()).deleteItem(i);
                 // ---------------------------------------------------------------------------------
 
                 // ---------------------------------------------------------------------------------
@@ -139,15 +152,6 @@ public class LocationsFragment extends Fragment {
 //                notificationIntent.putExtra("location", locations.get(i));
 //                notificationIntent.putExtra(LocationManager.KEY_PROXIMITY_ENTERING, true);
 //                getActivity().startService(notificationIntent);
-                // ---------------------------------------------------------------------------------
-
-                // ---------------------------------------------------------------------------------
-                // Test item modification.
-                if (checkInternetAccess()) {
-                    Intent addLocationIntent = new Intent(getActivity(), AddLocationActivity.class);
-                    addLocationIntent.putExtra("location", ParcelableUtil.marshall(locations.get(i)));
-                    startActivityForResult(addLocationIntent, UPDATE_LOCATION_REQUEST);
-                }
                 // ---------------------------------------------------------------------------------
                 return true;
             }
@@ -191,6 +195,7 @@ public class LocationsFragment extends Fragment {
                     this.locations.add(item);
                     adapter.notifyDataSetChanged();
                 }
+//                ((MainActivity) this.getActivity()).refreshDistances();
             }
         } else if (requestCode == UPDATE_LOCATION_REQUEST) {
             Log.wtf(TAG, "UPDATE RESULT");
@@ -219,6 +224,7 @@ public class LocationsFragment extends Fragment {
                     this.locations.add(item);
                     adapter.notifyDataSetChanged();
                 }
+//                ((MainActivity) this.getActivity()).refreshDistances();
             }
         } else {
             Toast.makeText(this.getActivity(), "Unable to add a location", Toast.LENGTH_SHORT);
