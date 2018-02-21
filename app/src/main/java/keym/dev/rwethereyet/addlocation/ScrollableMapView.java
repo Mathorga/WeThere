@@ -8,6 +8,7 @@ import com.google.android.gms.maps.MapView;
 
 /**
  * Created by luka on 18/05/17.
+ * The class implements a scrollable MapView intercepting touch events.
  */
 
 public class ScrollableMapView extends MapView {
@@ -27,6 +28,7 @@ public class ScrollableMapView extends MapView {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
+            // Intercept touch events in order to be able to scroll.
             case MotionEvent.ACTION_UP:
                 this.getParent().requestDisallowInterceptTouchEvent(false);
                 break;

@@ -38,6 +38,7 @@ import keym.dev.rwethereyet.util.ParcelableUtil;
 
 /**
  * Created by luka on 11/05/17.
+ * The class implements the activity used to add or modify a LocationItem.
  */
 
 public class AddLocationActivity extends BaseActivity {
@@ -272,23 +273,39 @@ public class AddLocationActivity extends BaseActivity {
         super.onDestroy();
     }
 
+    /**
+     * Getter.
+     * @return
+     *  the GoogleMap used to display the location.
+     */
     public GoogleMap getMap() {
         return this.map;
     }
 
+    /**
+     * Getter.
+     * @return
+     *  the LocationItem that's being created.
+     */
     public LocationItem getLocationItem() {
         return this.locationItem;
     }
 
+    /**
+     * Update the map to the given position.
+     * @param position
+     *  The destination position.
+     */
     public void moveMapTo(final LatLng position) {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, ZOOM);
-        map.animateCamera(cameraUpdate);
+        this.map.animateCamera(cameraUpdate);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == TONE_PICKER && resultCode == RESULT_OK) {
+            // Update the LocationItem's ringtone.
             Uri selectedUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             this.locationItem.setTone(selectedUri);
             this.ringtoneName.setText(RingtoneManager.getRingtone(this, selectedUri).getTitle(this));

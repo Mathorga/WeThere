@@ -20,6 +20,7 @@ import keym.dev.rwethereyet.util.ParcelableUtil;
 
 /**
  * Created by luka on 27/06/17.
+ * The class intercepts notification Intents created by the app
  */
 public class NotificationService extends IntentService {
 
@@ -46,6 +47,8 @@ public class NotificationService extends IntentService {
 
         // Set an ID for the notification.
         int notificationId = location.getId();
+
+        // Check if entering the area.
         if (entering) {
             Intent openAppIntent = new Intent(this, MainActivity.class);
             openAppIntent.putExtra("location", location);
@@ -60,6 +63,7 @@ public class NotificationService extends IntentService {
 //            Log.wtf(TAG, player.toString());
 //            openAppIntent.putExtra("player", player.toString());
 
+            // Create the notification builder.
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                                                                        .setSound(location.getTone())
                                                                        .setSmallIcon(R.drawable.ic_stat_external)

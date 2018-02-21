@@ -36,19 +36,19 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
 
-        Intent starter = this.getIntent();
-        if (starter != null) {
-            LocationItem location = starter.getParcelableExtra("location");
-
-            if (location != null) {
-                // Stop alarm.
-                Uri alarm = location.getTone();
-                Ringtone ringtone = RingtoneManager.getRingtone(this.getApplicationContext(), alarm);
-                ringtone.stop();
-
-                Log.wtf(TAG, "Stopped Alarm!!");
-            }
-        }
+//        Intent starter = this.getIntent();
+//        if (starter != null) {
+//            LocationItem location = starter.getParcelableExtra("location");
+//
+//            if (location != null) {
+//                // Stop alarm.
+//                Uri alarm = location.getTone();
+//                Ringtone ringtone = RingtoneManager.getRingtone(this.getApplicationContext(), alarm);
+//                ringtone.stop();
+//
+//                Log.wtf(TAG, "Stopped Alarm!!");
+//            }
+//        }
 
         // Ask for locations permissions.
         ActivityCompat.requestPermissions(this,
