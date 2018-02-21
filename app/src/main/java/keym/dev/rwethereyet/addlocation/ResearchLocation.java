@@ -15,6 +15,8 @@ import java.util.Locale;
 
 /**
  * Created by luka on 18/05/17.
+ * The class implements the task that performs the research for the GoogleMap
+ * using Google's geocoding system.
  */
 
 public class ResearchLocation extends AsyncTask<Void, Void, Boolean> {
@@ -45,8 +47,7 @@ public class ResearchLocation extends AsyncTask<Void, Void, Boolean> {
             this.address = results.get(0);
 
             // Get the coordinates of the address.
-            LatLng coords = new LatLng(this.address.getLatitude(), this.address.getLongitude());
-            this.position = coords;
+            this.position = new LatLng(this.address.getLatitude(), this.address.getLongitude());
         } catch (Exception e) {
             Log.e("", "Something went wrong: ", e);
             return false;
@@ -57,6 +58,7 @@ public class ResearchLocation extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(final Boolean result) {
         if (result) {
+            // Update the map.
             this.caller.moveMapTo(this.position);
             this.caller.getMap().addMarker(new MarkerOptions().position(this.position)
                                                               .draggable(false)
@@ -67,6 +69,11 @@ public class ResearchLocation extends AsyncTask<Void, Void, Boolean> {
         }
     }
 
+    /**
+     * Getter.
+     * @return
+     *  The position found.
+     */
     public LatLng getPosition() {
         return this.position;
     }

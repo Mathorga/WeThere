@@ -23,6 +23,7 @@ import keym.dev.rwethereyet.util.LocationItem;
 
 /**
  * Created by luka on 18/11/17.
+ * The class implements a custom adapter for the distance list fragment.
  */
 
 class DistanceListAdapter extends ArrayAdapter<LocationItem> {
