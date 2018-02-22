@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 /**
  * Created by luka on 13/02/18.
+ * The class implements methods to convert Parcelables to byte arrays and viceversa.
  * Code taken from https://stackoverflow.com/a/18000094/7009491
  */
 

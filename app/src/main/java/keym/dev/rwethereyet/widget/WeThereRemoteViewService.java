@@ -23,6 +23,7 @@ import keym.dev.rwethereyet.util.LocationParser;
 
 /**
  * Created by luka on 14/01/18.
+ * Implements a Service to manage widget interface rendering.
  */
 
 public class WeThereRemoteViewService extends RemoteViewsService {
@@ -39,6 +40,9 @@ public class WeThereRemoteViewService extends RemoteViewsService {
     }
 }
 
+/**
+ * Implements a widget interface content factory.
+ */
 class WeThereRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = "Factory";

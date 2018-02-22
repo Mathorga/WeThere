@@ -21,6 +21,8 @@ import java.util.List;
 
 /**
  * Created by luka on 10/06/17.
+ * The class implements the default interface between the application and the JSON file used to save
+ * the LocationItems.
  */
 
 public class LocationParser {
@@ -52,9 +54,9 @@ public class LocationParser {
     /**
      * Appends the given LocationItem in the default file in JSON format.
      * @param item
-     * The LocationItem to save.
+     *  The LocationItem to save.
      * @throws JSONException
-     * If an error occurs while creating a json object.
+     *  If an error occurs while creating a json object.
      */
     public void writeItem(final LocationItem item) throws JSONException {
         // Obtain currently saved object.
@@ -158,9 +160,9 @@ public class LocationParser {
      * Deletes a LocationItem from the save file and
      * updates the other elements' indexes accordingly.
      * @param itemId
-     * The index of the element that needs to be removed.
+     *  The index of the element that needs to be removed.
      * @return
-     * The list of LocationItems with updated indexes.
+     *  The list of LocationItems with updated indexes.
      */
     public List<LocationItem> deleteItem(final int itemId) {
         List<LocationItem> items = this.readAllItems();
@@ -204,6 +206,9 @@ public class LocationParser {
     /**
      * TODO
      * @return
+     *  Whether the update was successful or not.
+     * @throws JSONException
+     *  If an error occurs manipulating the save file.
      */
     public boolean updateItem(final LocationItem item) throws JSONException {
         // Obtain currently saved object.
@@ -230,6 +235,13 @@ public class LocationParser {
         }
     }
 
+    /**
+     * Reads the JSON file and converts its content to a JSONObject.
+     * @return
+     *  The read JSON content.
+     * @throws JSONException
+     *  If an error occurs manipulating the save file.
+     */
     private JSONObject parseFile() throws JSONException {
         // Parse existing JSON.
         String fileContentString = null;

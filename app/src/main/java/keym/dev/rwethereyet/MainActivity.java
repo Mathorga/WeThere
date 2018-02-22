@@ -2,9 +2,6 @@ package keym.dev.rwethereyet;
 
 import android.Manifest;
 import android.content.Intent;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -17,9 +14,12 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import keym.dev.rwethereyet.util.FragmentTabAdapter;
-import keym.dev.rwethereyet.util.LocationItem;
 import keym.dev.rwethereyet.settings.SettingsActivity;
 
+/**
+ * Created by luka on 26/05/17.
+ * Implements the main activity in the app, contains the app tabs.
+ */
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
@@ -35,20 +35,6 @@ public class MainActivity extends BaseActivity {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
-
-//        Intent starter = this.getIntent();
-//        if (starter != null) {
-//            LocationItem location = starter.getParcelableExtra("location");
-//
-//            if (location != null) {
-//                // Stop alarm.
-//                Uri alarm = location.getTone();
-//                Ringtone ringtone = RingtoneManager.getRingtone(this.getApplicationContext(), alarm);
-//                ringtone.stop();
-//
-//                Log.wtf(TAG, "Stopped Alarm!!");
-//            }
-//        }
 
         // Ask for locations permissions.
         ActivityCompat.requestPermissions(this,
@@ -101,7 +87,9 @@ public class MainActivity extends BaseActivity {
         Log.d(TAG, "onResume");
     }
 
-
+    /**
+     * Refreshes the distances fragment.
+     */
     public void refreshDistances() {
         Fragment fragment = this.adapter.getItem(1);
         this.getSupportFragmentManager()

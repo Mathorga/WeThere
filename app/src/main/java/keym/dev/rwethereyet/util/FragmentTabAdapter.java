@@ -17,6 +17,7 @@ import keym.dev.rwethereyet.locations.LocationsFragment;
 
 /**
  * Created by luka on 23/05/17.
+ * The class implement a custom Adapter for the app tabs.
  */
 
 public class FragmentTabAdapter extends FragmentPagerAdapter {
@@ -52,6 +53,11 @@ public class FragmentTabAdapter extends FragmentPagerAdapter {
         return this.tabs.size();
     }
 
+    /**
+     * Getter.
+     * @return
+     *  All the tabs.
+     */
     public List<Tab> getTabs() {
         return this.tabs;
     }
