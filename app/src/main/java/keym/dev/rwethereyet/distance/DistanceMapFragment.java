@@ -26,6 +26,7 @@ import keym.dev.rwethereyet.util.LocationParser;
 
 /**
  * Created by luka on 17/11/17.
+ * The Fragment shows a map representing every LocationItem and the current location.
  */
 
 public class DistanceMapFragment extends Fragment {
@@ -68,6 +69,8 @@ public class DistanceMapFragment extends Fragment {
                     // Preferences markers.
                     List<LocationItem> tmpLocations = new LocationParser(getContext()).readAllItems();
                     LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+                    // Add a marker for every LocationItem.
                     for (LocationItem item : tmpLocations) {
                         if (item.isActive()) {
                             map.addMarker(new MarkerOptions().position(item.getLocation())

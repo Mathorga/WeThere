@@ -31,6 +31,7 @@ import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by luka on 23/05/17.
+ * The Fragment shows a list of all saved LocationItems.
  */
 
 public class LocationsFragment extends Fragment {
@@ -115,44 +116,30 @@ public class LocationsFragment extends Fragment {
         this.locationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(view.getContext().getApplicationContext(),
-//                        locations.get(position).getLabel(),
-//                        Toast.LENGTH_SHORT).show();
-
-                // ---------------------------------------------------------------------------------
-                // Test item modification.
+                // Edit item.
                 if (checkInternetAccess()) {
                     Intent addLocationIntent = new Intent(getActivity(), AddLocationActivity.class);
                     addLocationIntent.putExtra("location", ParcelableUtil.marshall(locations.get(position)));
                     startActivityForResult(addLocationIntent, UPDATE_LOCATION_REQUEST);
                 }
-                // ---------------------------------------------------------------------------------
             }
         });
 
         this.locationsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Toast.makeText(view.getContext().getApplicationContext(),
-//                               locations.get(i).getLocation().latitude + ", " + locations.get(i).getLocation().longitude,
-//                               Toast.LENGTH_SHORT).show();
-
-                // ---------------------------------------------------------------------------------
-                // Test item deletion.
+                // Delete item.
                 Toast.makeText(getContext().getApplicationContext(),
                                "Deleted " + locations.get(i).getLabel(),
                                Toast.LENGTH_SHORT).show();
                 adapter.remove(locations.get(i));
                 new LocationParser(getContext()).deleteItem(i);
-                // ---------------------------------------------------------------------------------
 
-                // ---------------------------------------------------------------------------------
-                // Test notifications.
+                // DEBUG Notify fake proximity.
 //                Intent notificationIntent = new Intent(getContext(), NotificationService.class);
 //                notificationIntent.putExtra("location", locations.get(i));
 //                notificationIntent.putExtra(LocationManager.KEY_PROXIMITY_ENTERING, true);
 //                getActivity().startService(notificationIntent);
-                // ---------------------------------------------------------------------------------
                 return true;
             }
         });
@@ -195,7 +182,6 @@ public class LocationsFragment extends Fragment {
                     this.locations.add(item);
                     adapter.notifyDataSetChanged();
                 }
-//                ((MainActivity) this.getActivity()).refreshDistances();
             }
         } else if (requestCode == UPDATE_LOCATION_REQUEST) {
             Log.wtf(TAG, "UPDATE RESULT");
@@ -224,21 +210,24 @@ public class LocationsFragment extends Fragment {
                     this.locations.add(item);
                     adapter.notifyDataSetChanged();
                 }
-//                ((MainActivity) this.getActivity()).refreshDistances();
             }
         } else {
-            Toast.makeText(this.getActivity(), "Unable to add a location", Toast.LENGTH_SHORT);
+            Toast.makeText(this.getActivity(), "Unable to add a location", Toast.LENGTH_SHORT).show();
         }
     }
 
     /**
      * Checks the status of the internet connection, regardless of the technology used.
      * @return
-     * whether the device is connected to the internet or not.
+     *  whether the device is connected to the internet or not.
      */
     private boolean checkInternetAccess() {
         ConnectivityManager manager = (ConnectivityManager) this.getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = manager.getActiveNetworkInfo();
-        return info != null && info.isConnectedOrConnecting();
+        if (manager != null) {
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            return info != null && info.isConnectedOrConnecting();
+        } else {
+            return false;
+        }
     }
 }
