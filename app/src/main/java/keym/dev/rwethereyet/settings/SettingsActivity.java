@@ -12,6 +12,7 @@ import keym.dev.rwethereyet.R;
 
 /**
  * Created by luka on 26/05/17.
+ * The class shows the application settings using a SettingsFragment.
  */
 
 public class SettingsActivity extends BaseActivity {
@@ -52,6 +53,7 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        // Terminate the activity on settings update.
         this.finish();
     }
 }

@@ -11,10 +11,20 @@ import keym.dev.rwethereyet.MainActivity;
 import keym.dev.rwethereyet.R;
 
 /**
+ * Created by luka on 10/01/18.
  * Implementation of App Widget functionality.
  */
 public class WeThereAppWidget extends AppWidgetProvider {
 
+    /**
+     * Wrapper for the updateAppWidget method of the AppWidgetManager.
+     * @param context
+     *  The working context.
+     * @param appWidgetManager
+     *  The used AppWidgetManager.
+     * @param appWidgetId
+     *  The id.
+     */
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         // PendingIntent to launch the MainActivity when the widget is clicked.
         Intent launchMain = new Intent(context, MainActivity.class);
@@ -38,18 +48,16 @@ public class WeThereAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
-
-//        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        // Unused.
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+        // Unused.
     }
 }
 

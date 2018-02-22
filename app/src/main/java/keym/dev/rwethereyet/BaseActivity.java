@@ -3,15 +3,13 @@ package keym.dev.rwethereyet;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by luka on 26/05/17.
+ * Implements the basic functions for the app activities.
  */
 
 public class BaseActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -69,6 +67,9 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
+    /**
+     * Restarts the activity.
+     */
     protected void restart() {
         Intent intent = this.getIntent();
         this.overridePendingTransition(0, 0);

@@ -11,12 +11,12 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.preference.SwitchPreference;
 import android.util.Log;
-import android.widget.Toast;
 
 import keym.dev.rwethereyet.R;
 
 /**
  * Created by luka on 29/05/17.
+ * The class shows every application setting and updates the shared preferences accordingly.
  */
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener{
@@ -50,7 +50,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         this.tonePreference = (RingtonePreference) this.findPreference(toneKey);
         this.tonePreference.setSummary(actualRingtoneTitle);
 
-        String mapKey = this.getResources().getString(R.string.preferences_key);
+        String mapKey = this.getResources().getString(R.string.preference_distances_key);
         this.mapPreference = (SwitchPreference) this.findPreference(mapKey);
 
     }
@@ -58,7 +58,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         PreferenceManager.getDefaultSharedPreferences(this.getActivity()).unregisterOnSharedPreferenceChangeListener(this);
     }
 
@@ -81,7 +80,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             this.tonePreference = (RingtonePreference) this.findPreference(toneKey);
             this.tonePreference.setSummary(actualRingtoneTitle);
         } else if (s.equals(this.getResources().getString(R.string.preference_distances_key))) {
-//            Toast.makeText(this.getActivity(), "distances changed", Toast.LENGTH_SHORT).show();
+            Log.wtf(TAG, "Distances changed");
         }
     }
 }

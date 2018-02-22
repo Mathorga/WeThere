@@ -69,47 +69,6 @@ public class LocationsFragment extends Fragment {
 
         this.locations = new LocationParser(this.getContext()).readAllItems();
 
-        // Register locations' alarms.
-//        LocationManager manager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
-//        int permission = ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
-//        if (permission == PackageManager.PERMISSION_GRANTED) {
-//            for (LocationItem item : this.locations) {
-//                if (item.isActive()) {
-//                    Intent alarmIntent = new Intent(this.getContext(), NotificationService.class);
-//                    PendingIntent pendingAlarm = PendingIntent.getService(this.getContext(),
-//                                                                          ALARM_REQUEST,
-//                                                                          alarmIntent,
-//                                                                          PendingIntent.FLAG_UPDATE_CURRENT);
-//                    manager.addProximityAlert(item.getLocation().latitude,
-//                                              item.getLocation().longitude,
-//                                              item.getRadius() * LocationItem.M_TO_KM,
-//                                              -1,
-//                                              pendingAlarm);
-//                }
-//            }
-//            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, new LocationListener() {
-//                @Override
-//                public void onLocationChanged(Location location) {
-//                    Log.d(TAG, "Location changed: " + location.getLatitude() + "@" + location.getLongitude());
-//                }
-//
-//                @Override
-//                public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//                }
-//
-//                @Override
-//                public void onProviderEnabled(String provider) {
-//
-//                }
-//
-//                @Override
-//                public void onProviderDisabled(String provider) {
-//
-//                }
-//            });
-//        }
-
         this.adapter = new LocationListAdapter(this.getActivity(), R.layout.item_location, this.locations);
         this.locationsView.setAdapter(this.adapter);
 

@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by Luka on 10/05/2017.
+ * The class implements the core of the app: the location to be saved.
  */
 
 public class LocationItem implements Parcelable {
@@ -62,50 +63,110 @@ public class LocationItem implements Parcelable {
         this.active = parcel.readByte() != 0;
     }
 
+    /**
+     * Getter.
+     * @return
+     *  The LocationItem id.
+     */
     public Integer getId() {
         return this.id;
     }
 
+    /**
+     * Setter.
+     * @param id
+     *  The LocationItem id to set.
+     */
     public void setId(final Integer id) {
         this.id = id;
     }
 
+    /**
+     * Getter.
+     * @return
+     *  The LocationItem label (showed name).
+     */
     public String getLabel() {
         return this.label;
     }
 
+    /**
+     * Setter.
+     * @param name
+     *  The name to show for the LocationItem.
+     */
     public void setLabel(final String name) {
         this.label = name;
     }
 
+    /**
+     * Getter.
+     * @return
+     *  The LocationItem radius.
+     */
     public Integer getRadius() {
         return this.radius;
     }
 
+    /**
+     * Setter.
+     * @param radius
+     *  The radius to assign to the LocationItem.
+     */
     public void setRadius(final Integer radius) {
         this.radius = radius;
     }
 
+    /**
+     * Getter.
+     * @return
+     *  The coordinates for the LocationItem position.
+     */
     public LatLng getLocation() {
         return this.location;
     }
 
+    /**
+     * Setter.
+     * @param location
+     *  The coordinates for the LocationItem position.
+     */
     public void setLocation(final LatLng location) {
         this.location = location;
     }
 
+    /**
+     * Getter.
+     * @return
+     *  The ringtone URI associated to the LocationItem.
+     */
     public Uri getTone() {
         return this.tone;
     }
 
+    /**
+     * Setter.
+     * @param tone
+     *  The URI of the ringtone to link to the LocationItem.
+     */
     public void setTone(final Uri tone) {
         this.tone = tone;
     }
 
+    /**
+     * Getter.
+     * @return
+     *  Whether the LocationItem is active or not.
+     */
     public boolean isActive() {
         return this.active;
     }
 
+    /**
+     * Setter.
+     * @param active
+     *  Whether the LocationItem needs to be activated or not.
+     */
     public void setActive(final Boolean active) {
         this.active = active;
     }
