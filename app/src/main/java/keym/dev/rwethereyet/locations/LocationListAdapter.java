@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import keym.dev.rwethereyet.util.ParcelableUtil;
 
 /**
  * Created by Luka on 09/05/2017.
+ * The class implements a custom adapter for the saved LocationItems.
  */
 public class LocationListAdapter extends ArrayAdapter<LocationItem> {
 
@@ -44,14 +46,15 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
     private final Context context;
     private int layoutResource;
     
-    public LocationListAdapter(final Context context, final int layoutResource, List<LocationItem> data) {
+    LocationListAdapter(final Context context, final int layoutResource, List<LocationItem> data) {
         super(context, layoutResource, data);
         this.context = context;
         this.layoutResource = layoutResource;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, final View convertView, final ViewGroup parent) {
+    public View getView(final int position, final View convertView, @NonNull final ViewGroup parent) {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(this.getContext());
@@ -70,7 +73,8 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
             }
 
             if (coordinates != null) {
-                coordinates.setText(coordFormat.format(item.getLocation().latitude) + " : " + coordFormat.format(item.getLocation().longitude));
+                String coordText = coordFormat.format(item.getLocation().latitude) + " : " + coordFormat.format(item.getLocation().longitude);
+                coordinates.setText(coordText);
             }
 
             if (active != null) {
@@ -99,36 +103,42 @@ public class LocationListAdapter extends ArrayAdapter<LocationItem> {
 
 
                                 // Set alarm.
-                                manager.addProximityAlert(item.getLocation().latitude,
-                                                          item.getLocation().longitude,
-                                                          item.getRadius() * LocationItem.M_TO_KM,
-                                                          -1,
-                                                          pendingAlarm);
+                                if (manager != null) {
+                                    manager.addProximityAlert(item.getLocation().latitude,
+                                            item.getLocation().longitude,
+                                            item.getRadius() * LocationItem.M_TO_KM,
+                                            -1,
+                                            pendingAlarm);
+                                    Log.wtf(TAG, "Set proximity alert for " + item.getLabel());
+                                }
 
-                                Log.wtf(TAG, "Set proximity alert for " + item.getLabel());
-                                manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
-                                    @Override
-                                    public void onLocationChanged(Location location) {
-                                        Log.d(TAG, "Location changed");
-                                    }
+                                if (manager != null) {
+                                    manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
+                                        @Override
+                                        public void onLocationChanged(Location location) {
+                                            Log.d(TAG, "Location changed");
+                                        }
 
-                                    @Override
-                                    public void onStatusChanged(String provider, int status, Bundle extras) {
+                                        @Override
+                                        public void onStatusChanged(String provider, int status, Bundle extras) {
 
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onProviderEnabled(String provider) {
+                                        @Override
+                                        public void onProviderEnabled(String provider) {
 
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onProviderDisabled(String provider) {
+                                        @Override
+                                        public void onProviderDisabled(String provider) {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             } else {
-                                manager.removeProximityAlert(pendingAlarm);
+                                if (manager != null) {
+                                    manager.removeProximityAlert(pendingAlarm);
+                                }
                             }
                         }
 

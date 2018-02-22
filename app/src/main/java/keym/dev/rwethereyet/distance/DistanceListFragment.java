@@ -16,6 +16,7 @@ import keym.dev.rwethereyet.util.LocationParser;
 
 /**
  * Created by luka on 17/11/17.
+ * The Fragment shows a list of distances between the current or cached location and the active LocationItems.
  */
 
 public class DistanceListFragment extends Fragment {
@@ -43,6 +44,7 @@ public class DistanceListFragment extends Fragment {
         this.locations = new ArrayList<>();
         this.distancesView = (ListView) this.rootView.findViewById(R.id.distanceList);
 
+        // Read all LocationItems.
         List<LocationItem> tmpLocations = new LocationParser(this.getContext()).readAllItems();
 
         for (LocationItem item : tmpLocations) {
@@ -51,6 +53,7 @@ public class DistanceListFragment extends Fragment {
             }
         }
 
+        // Set the custom adapter for the ListView.
         this.adapter = new DistanceListAdapter(this.getActivity(), R.layout.item_distance, this.locations);
         this.distancesView.setAdapter(this.adapter);
     }
